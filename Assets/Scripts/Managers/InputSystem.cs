@@ -1,56 +1,52 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+
+/// <summary>
+/// Goal: Handles Player Inputs
+/// </summary>
 
 public class InputSystem : MonoBehaviour
 {
-    public Action<bool> OnPause;
+    private GameManager gameManager;
 
-    bool isPaused = false;
+    public Action<Vector2> OnMapScroll;
 
-    Ray mouseRay;
+    public Action OnMouseLeftClick;
 
-    // Start is called before the first frame update
-    void Start()
+    //Cache
+    private Vector2 axis; 
+
+    private void Start()
     {
-        
+        gameManager = GameManager.GetInstance();
+        if (!gameManager) Debug.LogError("Missing GameManager.", gameObject);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.P))
-        {
-            isPaused = !isPaused;
-            OnPause?.Invoke(isPaused);
-        }
-
-
-        if(Input.GetKeyUp(KeyCode.Mouse0)) MouseClick();
+        KeyboardEvents();
+        MouseEvents();
     }
 
-
-    private void MouseClick()
+    private void KeyboardEvents()
     {
-        mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        Debug.DrawLine(mouseRay.origin, mouseRay.direction * 1000f, Color.red); 
-
-        RaycastHit hit;
-        
-        if(Physics.Raycast(mouseRay,out hit, float.MaxValue))
-        {
-            var gameObject = hit.collider.gameObject;
-
-            if (gameObject.CompareTag("Enemy")) // Example 
-            {
-                gameObject.GetComponent<TestEnemy>().Click();
-            }
-            else
-            {
-                Debug.Log(gameObject.name); // Example
-            }
-        }
+        // To Pause the game
+        if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape)) gameManager.OnGamePause?.Invoke();
     }
+
+    private void MouseEvents()
+    {
+        //Left click
+        if (Input.GetKeyUp(KeyCode.Mouse0)) OnMouseLeftClick?.Invoke();
+    }
+
+    private void LateUpdate()
+    {
+        axis.x = Input.GetAxis("Horizontal");
+        axis.y = Input.GetAxis("Vertical");
+
+        OnMapScroll?.Invoke(axis.normalized);
+    }
+
 }

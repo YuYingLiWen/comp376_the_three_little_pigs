@@ -2,17 +2,25 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// Goal: Manages the overall game system.
+/// </summary>
+
 public class GameManager : MonoBehaviour
 {
     // Note: Script MUST be attached to DDOL
     private static GameManager instance = null;
-
     public static GameManager GetInstance() => instance;
 
-    [SerializeField]private SceneManager sceneManager = null;
+    [SerializeField] private SceneDirector sceneManager = null;
     [SerializeField] private LevelManager levelManager = null;
     [SerializeField] private InputSystem inputSystem = null;
 
+    // Game Pause
+    private enum GameState { PLAY, PAUSED, MAIN_MENU, CREDITS };
+    private GameState currentGameState = GameState.MAIN_MENU;
+
+    public Action OnGamePause;
 
     private void Awake()
     {
@@ -20,64 +28,62 @@ public class GameManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
+    private void OnEnable()
+    {
+        OnGamePause += HandleGamePause;
+
+    }
+
     private void Start()
     {
         inputSystem = gameObject.GetComponentInChildren<InputSystem>();
         if (!inputSystem) Debug.LogError("Missing Input System", gameObject);
 
-        sceneManager = gameObject.GetComponent<SceneManager>();
+        sceneManager = gameObject.GetComponent<SceneDirector>();
         if (!sceneManager) Debug.LogError("Missing Scene Manager", gameObject);
-
-        SubscribeInputEvents();
     }
 
-    private void SubscribeInputEvents()
+    private void OnDisable()
     {
-        inputSystem.OnPause += ShowPauseMenu;
-
+        OnGamePause -= HandleGamePause;
     }
 
-    private void OnLevelSceneActivation()
+    public void HandleLevelSceneActivation()
     {
-        // Grab the level manager
-        var obj = GameObject.Find(LEVEL_MANAGER);
-        if (obj) levelManager = GameObject.Find(LEVEL_MANAGER).GetComponent<LevelManager>();
-        else Debug.LogError("Missing Level Manager", gameObject);
-
-        LinkToLevelManagerEvents();
+        currentGameState = GameState.PLAY;
 
         inputSystem.enabled = true;
     }
 
-    private void LinkToLevelManagerEvents()
+    public void HandleCreditsSceneActivation()
     {
-        levelManager.OnGameOver += ShowGameOverMenu;
-        levelManager.OnGameWon += ShowGameWonMenu;
-    }
-
-    private void ShowGameOverMenu()
-    {
+        currentGameState = GameState.CREDITS;
 
     }
 
-    private void ShowGameWonMenu()
+    public void HandleMainMenuSceneActivation()
     {
+        currentGameState = GameState.MAIN_MENU;
 
     }
 
-    private void ShowMainMenu()
+    public void HandleGameOver()
     {
 
     }
 
-    private void ShowCredits()
+    public void HandleGameWon()
     {
 
     }
 
-    private void ShowPauseMenu(bool enable)
+    private void HandleGamePause()
     {
-        if(enable) // Show pause menu
+        if      (currentGameState == GameState.PLAY)   currentGameState = GameState.PAUSED;
+        else if (currentGameState == GameState.PAUSED) currentGameState = GameState.PLAY;
+
+
+        if (currentGameState == GameState.PAUSED) // Show pause menu
         {
 
         }
@@ -86,6 +92,8 @@ public class GameManager : MonoBehaviour
 
         }
     }
+
+    public InputSystem GetInputSystem() => inputSystem;
 
     private const string LEVEL_MANAGER = "LevelManager";
 }

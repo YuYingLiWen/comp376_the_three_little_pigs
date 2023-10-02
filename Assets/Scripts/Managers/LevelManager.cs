@@ -3,25 +3,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Goal: Checks win & lose conditions.
+/// </summary>
+
 public class LevelManager : MonoBehaviour
 {
+    [SerializeField] private float cameraScrollSpeed = 1.0f;
+
+    private GameManager gameManager;
+    private InputSystem inputSystem;
+
     public Action OnGameOver;
     public Action OnGameWon;
 
+    //Cache
+    private Camera cam;
+    private Ray mouseRay;
 
-    //TODO : Level criterias, parameters, etc...
 
-
-
-    private void Awake()
+    private void OnEnable()
     {
+        // Bad codding style start fine for now
+        cam = Camera.main;
 
+        gameManager = GameManager.GetInstance();
+        if (!gameManager) Debug.LogError("Missing Game Manager", gameObject);
+
+        inputSystem = gameManager.GetInputSystem();
+        // Bad codding style end
+
+
+        OnGameOver += gameManager.HandleGameOver;
+        OnGameWon += gameManager.HandleGameWon;
+
+        inputSystem.OnMouseLeftClick += HandleMouseLeftClick;
+        inputSystem.OnMapScroll += HandleMapScroll;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnDisable()
     {
-        
+        OnGameOver -= gameManager.HandleGameOver;
+        OnGameWon -= gameManager.HandleGameWon;
+
+        inputSystem.OnMouseLeftClick -= HandleMouseLeftClick;
     }
 
     private void GameOver()
@@ -32,5 +57,33 @@ public class LevelManager : MonoBehaviour
     private void GameWon()
     {
         OnGameWon?.Invoke();
+    }
+
+    private void HandleMapScroll(Vector2 axis)
+    {
+        cam.transform.Translate(axis * Time.deltaTime);
+    }
+
+    private void HandleMouseLeftClick()
+    {
+        mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        Debug.DrawLine(mouseRay.origin, mouseRay.direction * 1000f, Color.red);
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(mouseRay, out hit, float.MaxValue))
+        {
+            var gameObject = hit.collider.gameObject;
+
+            if (gameObject.CompareTag("Enemy")) // Example 
+            {
+                gameObject.GetComponent<TestEnemy>().Click();
+            }
+            else
+            {
+                Debug.Log(gameObject.name); // Example
+            }
+        }
     }
 }
