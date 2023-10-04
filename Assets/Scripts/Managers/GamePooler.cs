@@ -8,6 +8,7 @@ public partial class GameObjectPooler : MonoBehaviour
 {
     private GameObjectPooler instance = null;
 
+
     private ObjectPool<GameObject> poolObject1;
 
     private void Awake()
@@ -21,27 +22,7 @@ public partial class GameObjectPooler : MonoBehaviour
         poolObject1 = new ObjectPool<GameObject>(OnCreateObj1, OnGetObj1, OnReleaseObj1,OnDestroyObj1,true,90) ;
 
     }
+
+    
 }
 
-public partial class GameObjectPooler : MonoBehaviour
-{
-    ///
-    GameObject OnCreateObj1()
-    {
-        return new GameObject();
-    }
-
-    void OnGetObj1(GameObject obj)
-    {
-    }
-
-    void OnReleaseObj1(GameObject obj)
-    {
-    }
-
-    void OnDestroyObj1(GameObject obj)
-    {
-    }
-
-    public ObjectPool<GameObject> GetPool1() => poolObject1;
-}
