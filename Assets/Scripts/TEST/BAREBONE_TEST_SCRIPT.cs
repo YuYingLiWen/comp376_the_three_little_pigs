@@ -29,7 +29,6 @@ public class BAREBONE_TEST_SCRIPT : MonoBehaviour
     void Start()
     {
         cam = Camera.main;
-
     }
 
     // Update is called once per frame

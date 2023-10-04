@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,11 +9,27 @@ using UnityEngine.SceneManagement;
 
 public class SceneDirector : MonoBehaviour
 {
+    private static SceneDirector instance = null;
+
     private GameManager gameManager;
 
     private AsyncOperation asyncOps = null;
 
     private Coroutine loadRoutine = null;
+
+    public Action<string> OnSceneActivated;
+
+    public class SceneNames
+    {
+        public const string MAIN_MENU_SCENE = "MainMenuScene";
+        public const string LEVEL1_SCENE = "Level1";
+    }
+
+    private void Awake()
+    {
+        if (!instance) instance = this;
+        else Destroy(this);
+    }
 
     void Start()
     {
@@ -20,12 +37,14 @@ public class SceneDirector : MonoBehaviour
         if (!gameManager) Debug.LogError("Missing Game Manager", gameObject);
     }
 
-    public void Load(string sceneName)
+    public static SceneDirector GetInstance() => instance;
+
+    public void Load(string sceneName, bool activate)
     {
-        if (loadRoutine == null) loadRoutine = StartCoroutine(LoadSceneCoroutine(sceneName));
+        if (loadRoutine == null) loadRoutine = StartCoroutine(LoadSceneCoroutine(sceneName, activate));
     }
 
-    public void ActivateLoadedScene()
+    public void ActivateLoadedScene(string sceneName)
     {
         if (asyncOps == null) return;
 
@@ -34,10 +53,13 @@ public class SceneDirector : MonoBehaviour
             asyncOps.allowSceneActivation = true;
             asyncOps.allowSceneActivation = false;
             asyncOps = null;
+            loadRoutine = null;
+
+            OnSceneActivated?.Invoke(sceneName);
         }
     }
 
-    private IEnumerator LoadSceneCoroutine(string sceneName)
+    private IEnumerator LoadSceneCoroutine(string sceneName, bool activate)
     {
         asyncOps = SceneManager.LoadSceneAsync(sceneName);
 
@@ -45,5 +67,7 @@ public class SceneDirector : MonoBehaviour
         {
             yield return null;
         }
+
+        if(activate) ActivateLoadedScene(sceneName);
     }
 }

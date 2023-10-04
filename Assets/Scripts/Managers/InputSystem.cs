@@ -15,7 +15,7 @@ public class InputSystem : MonoBehaviour
     public Action OnMouseLeftClick;
 
     //Cache
-    private Vector2 axis; 
+    private Vector2 axis = Vector2.zero; 
 
     private void Start()
     {

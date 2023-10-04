@@ -21,19 +21,21 @@ public class LevelManager : MonoBehaviour
     private Camera cam;
     private Ray mouseRay;
 
+    // gather 1000 stones
 
-    private void OnEnable()
+
+    private void Awake()
     {
-        // Bad codding style start fine for now
         cam = Camera.main;
 
         gameManager = GameManager.GetInstance();
         if (!gameManager) Debug.LogError("Missing Game Manager", gameObject);
 
         inputSystem = gameManager.GetInputSystem();
-        // Bad codding style end
+    }
 
-
+    private void OnEnable()
+    {
         OnGameOver += gameManager.HandleGameOver;
         OnGameWon += gameManager.HandleGameWon;
 

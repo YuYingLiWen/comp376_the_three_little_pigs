@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     private static GameManager instance = null;
     public static GameManager GetInstance() => instance;
 
-    [SerializeField] private SceneDirector sceneManager = null;
+    [SerializeField] private SceneDirector sceneDirector = null;
     [SerializeField] private LevelManager levelManager = null;
     [SerializeField] private InputSystem inputSystem = null;
 
@@ -26,11 +26,17 @@ public class GameManager : MonoBehaviour
     {
         if(!instance) instance = this;
         else Destroy(gameObject);
+
+        sceneDirector = SceneDirector.GetInstance();
+        if (!sceneDirector) Debug.LogError("Missing Scene Director.", gameObject);
+
     }
 
     private void OnEnable()
     {
         OnGamePause += HandleGamePause;
+        sceneDirector.OnSceneActivated += HandleLevelSceneActivation;
+        sceneDirector.OnSceneActivated += HandleMainMenuSceneActivation;
 
     }
 
@@ -38,9 +44,6 @@ public class GameManager : MonoBehaviour
     {
         inputSystem = gameObject.GetComponentInChildren<InputSystem>();
         if (!inputSystem) Debug.LogError("Missing Input System", gameObject);
-
-        sceneManager = gameObject.GetComponent<SceneDirector>();
-        if (!sceneManager) Debug.LogError("Missing Scene Manager", gameObject);
     }
 
     private void OnDisable()
@@ -48,8 +51,10 @@ public class GameManager : MonoBehaviour
         OnGamePause -= HandleGamePause;
     }
 
-    public void HandleLevelSceneActivation()
+    public void HandleLevelSceneActivation(string sceneName)
     {
+        if (!sceneName.Contains("Level")) return;
+
         currentGameState = GameState.PLAY;
 
         inputSystem.enabled = true;
@@ -61,8 +66,10 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void HandleMainMenuSceneActivation()
+    public void HandleMainMenuSceneActivation(string sceneName)
     {
+        if (!sceneName.Equals(SceneDirector.SceneNames.MAIN_MENU_SCENE)) return;
+
         currentGameState = GameState.MAIN_MENU;
 
     }
