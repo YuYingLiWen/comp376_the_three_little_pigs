@@ -75,6 +75,3 @@ crashlytics-build.properties
 # Test Folders
 Assets/YuTest.*
 Assets/YuTest/
-
-#TMP
-Assets/TextMesh*
