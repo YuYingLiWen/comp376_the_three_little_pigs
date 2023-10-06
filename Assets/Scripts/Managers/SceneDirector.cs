@@ -14,7 +14,6 @@ public class SceneDirector : MonoBehaviour
     private GameManager gameManager;
 
     private AsyncOperation asyncOps = null;
-
     private Coroutine loadRoutine = null;
 
     public Action<string> OnSceneActivated;

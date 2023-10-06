@@ -12,9 +12,11 @@ public class GameManager : MonoBehaviour
     private static GameManager instance = null;
     public static GameManager GetInstance() => instance;
 
+    /// The following are serizlized for debugging purposes
     [SerializeField] private SceneDirector sceneDirector = null;
     [SerializeField] private LevelManager levelManager = null;
     [SerializeField] private InputSystem inputSystem = null;
+    [SerializeField] private AudioManager audioManager = null;
 
     // Game Pause
     private enum GameState { PLAY, PAUSED, MAIN_MENU, CREDITS };
@@ -44,6 +46,9 @@ public class GameManager : MonoBehaviour
     {
         inputSystem = gameObject.GetComponentInChildren<InputSystem>();
         if (!inputSystem) Debug.LogError("Missing Input System", gameObject);
+
+        audioManager = gameObject.GetComponentInChildren<AudioManager>();
+        if (!audioManager) Debug.LogError("Missing Audio Manager", gameObject);
     }
 
     private void OnDisable()
@@ -72,6 +77,7 @@ public class GameManager : MonoBehaviour
 
         currentGameState = GameState.MAIN_MENU;
 
+        audioManager.Play(sceneName);
     }
 
     public void HandleGameOver()
