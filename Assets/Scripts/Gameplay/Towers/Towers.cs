@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CircleCollider2D), typeof(SpriteRenderer), typeof(AudioSource))]
+[RequireComponent(typeof(CapsuleCollider), typeof(SpriteRenderer), typeof(AudioSource))]
 public abstract class Towers : MonoBehaviour, ITower, IInteractable
 {
     [SerializeField] private Vector3 exit;
@@ -10,23 +10,26 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
     private List<GameObject> garrisonedUnits = new();
     private List<GameObject> enemiesInRange = new();
 
-    [SerializeField] private float range;
-    [SerializeField] private int attack;
-    [SerializeField] private float delayPerShot;
-    [SerializeField] private int currentLevel; // Used for upgrade
+    protected int currentTier = 0; // Used for upgrade
 
-    public int GetCurrentLevel() => currentLevel;
+    protected TowerScriptableObject so;
 
+    // Returns the upgrade level/tier of the tower.
+    public int GetCurrentTier() => currentTier;
+
+    [SerializeField] GameObject projecteile; 
     void Awake()
     {
-        coll = gameObject.GetComponent<CircleCollider2D>();
+        coll = gameObject.GetComponent<CapsuleCollider>();
         audioS = gameObject.GetComponent<AudioSource>();
         rend = gameObject.GetComponent<SpriteRenderer>();
     }
 
     private void Start()
     {
-        coll.radius = range;
+        so = TowersUpgrades.GetInstance().GetArrowTierDebugSO;
+        coll.radius = so.Range;
+        coll.height= so.Range;
     }
 
     private void Update()
@@ -78,12 +81,15 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
         target = current;
     }
 
+    // Fires an arrow towards the target.
     private void Attack()
     {
-        if (elapsedTime >= delayPerShot)
+        if (elapsedTime >= so.DelayPerShot)
         {
             elapsedTime = 0;
-            throw new NotImplementedException(); // Fire!
+
+            Fire();
+            OnFire(); // Fire!
         }
         elapsedTime += Time.deltaTime;
     }
@@ -104,47 +110,55 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
         pig.SetActive(false);
     }
 
-    public void Upgrade()
+    /// <summary>
+    /// Upgrades tower to next tier.
+    /// </summary>
+    public virtual void Upgrade()
     {
-        throw new System.NotImplementedException();
+        if (currentTier + 1 > so.MaxTier) return;
+
+        currentTier += 1;
     }
 
     public void OnClick()
     {
-        audioS.Play();
+        audioS.Stop();
+        audioS.PlayOneShot(so.OnClickSFX);
+    }
+
+    // The tower fires its weapon
+    [ContextMenu("Fire")]
+    protected virtual void Fire()
+    {
+        Debug.DrawRay(transform.position, target.position - transform.position, Color.yellow, 5.0f);
+
+        var obj = Instantiate(projecteile);
+        obj.transform.parent = transform;
+        obj.transform.position = transform.position;
+        obj.transform.up = target.position - transform.position;
+        OnFire();
+    }
+
+    protected virtual void OnFire()
+    {
+        audioS.Stop();
+        audioS.PlayOneShot(so.OnShootSFX);
+    }
+
+    protected virtual void OnTierChange()
+    {
+        rend.sprite = so.TowerSprite;
     }
 
     //Cache
     Vector3 position;
-    private Transform target = null;
+    [SerializeField] private Transform target = null;
 
     private float elapsedTime = 0.0f;
 
-    private CircleCollider2D coll;
+    private CapsuleCollider coll;
     private AudioSource audioS;
     private SpriteRenderer rend;
-}
-
-public class TowerUpgradeData
-{
-    private TowerUpgradeData instance;
-    public TowerUpgradeData GetInstance() => instance;
-
-    // SOs
-    // TowerScriptableObject GetScriptableObject(Towers tower)
-/*    switch(tower.GetCurrentLevel())
-        {
-            case 0:
-                // Set SO level 1;
-                break;
-            case 1:
-                // Set SO level 2;
-                break;
-            default:
-                Debug.LogWarning("Something went wrong", tower);
-                break;
-        }*/
-
 }
 
 internal interface ITower
@@ -158,13 +172,6 @@ internal interface ITower
     /// To have ALL units abandon tower.
     /// </summary>
     void Abandon();
-
-
-    /// <summary>
-    /// Upgrades tower to next tier.
-    /// </summary>
-    void Upgrade();
-
 }
 
 internal interface IInteractable
