@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efdcece2215a0ff4e9859a49769d0380, type: 3}
   m_Name: ArrowTier1
   m_EditorClassIdentifier: 
-  attack: 0
-  range: 0
-  delayPerShot: 0
-  maxTier: 0
+  attack: 1
+  range: 3
+  delayPerShot: 2
+  maxTier: 2
   tower: {fileID: 0}
+  onClickSFX: {fileID: 0}
+  onShootSFX: {fileID: 0}
