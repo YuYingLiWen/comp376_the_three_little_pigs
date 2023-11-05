@@ -17,6 +17,7 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
     // Returns the upgrade level/tier of the tower.
     public int GetCurrentTier() => currentTier;
 
+    [SerializeField] GameObject projecteile; 
     void Awake()
     {
         coll = gameObject.GetComponent<CapsuleCollider>();
@@ -26,6 +27,7 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
 
     private void Start()
     {
+        so = TowersUpgrades.GetInstance().GetArrowTierDebugSO;
         coll.radius = so.Range;
         coll.height= so.Range;
     }
@@ -125,10 +127,15 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
     }
 
     // The tower fires its weapon
+    [ContextMenu("Fire")]
     protected virtual void Fire()
     {
+        Debug.DrawRay(transform.position, target.position - transform.position, Color.yellow, 5.0f);
 
-
+        var obj = Instantiate(projecteile);
+        obj.transform.parent = transform;
+        obj.transform.position = transform.position;
+        obj.transform.up = target.position - transform.position;
         OnFire();
     }
 
@@ -145,7 +152,7 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
 
     //Cache
     Vector3 position;
-    private Transform target = null;
+    [SerializeField] private Transform target = null;
 
     private float elapsedTime = 0.0f;
 
