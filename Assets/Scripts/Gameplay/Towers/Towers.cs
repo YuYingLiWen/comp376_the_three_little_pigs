@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CapsuleCollider), typeof(SpriteRenderer), typeof(AudioSource))]
+[RequireComponent(typeof(SphereCollider), typeof(SpriteRenderer), typeof(AudioSource))]
+[RequireComponent(typeof(Rigidbody))]
 public abstract class Towers : MonoBehaviour, ITower, IInteractable
 {
     [SerializeField] private Vector3 exit;
@@ -17,22 +17,22 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
     // Returns the upgrade level/tier of the tower.
     public int GetCurrentTier() => currentTier;
 
-    [SerializeField] GameObject projecteile; 
-    void Awake()
+    protected virtual void Awake()
     {
-        coll = gameObject.GetComponent<CapsuleCollider>();
+        coll = gameObject.GetComponent<SphereCollider>();
         audioS = gameObject.GetComponent<AudioSource>();
         rend = gameObject.GetComponent<SpriteRenderer>();
     }
 
-    private void Start()
+    protected virtual void Start()
     {
-        so = TowersUpgrades.GetInstance().GetArrowTierDebugSO;
+        so = TowersUpgrades.GetInstance().GetArrowTier1SO;
         coll.radius = so.Range;
-        coll.height= so.Range;
+        
+        GetComponent<Rigidbody>().isKinematic = true;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (enemiesInRange.Count <= 0 && target == null) return;
 
@@ -45,19 +45,29 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
         if (target) Attack();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter(Collision collision)
     {
-        if(collision.CompareTag("Enemy"))
+        Debug.Log("Collision enter: " + collision.collider.name);
+    }
+
+    protected virtual void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Trigger enter: " + other.name);
+
+        if (other.CompareTag("Enemy"))
         {
-            enemiesInRange.Add(collision.gameObject);
+            enemiesInRange.Add(other.gameObject);
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    protected virtual void OnTriggerExit(Collider other)
     {
-        if (collision.CompareTag("Enemy"))
+        Debug.Log("Trigger Exit: " + other.name);
+
+        if (other.CompareTag("Enemy"))
         {
-            enemiesInRange.Remove(collision.gameObject);
+            if (other.transform == target) target = null;
+            enemiesInRange.Remove(other.gameObject);
         }
     }
 
@@ -132,10 +142,6 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
     {
         Debug.DrawRay(transform.position, target.position - transform.position, Color.yellow, 5.0f);
 
-        var obj = Instantiate(projecteile);
-        obj.transform.parent = transform;
-        obj.transform.position = transform.position;
-        obj.transform.up = target.position - transform.position;
         OnFire();
     }
 
@@ -152,11 +158,11 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
 
     //Cache
     Vector3 position;
-    [SerializeField] private Transform target = null;
+    [SerializeField] protected Transform target = null;
 
     private float elapsedTime = 0.0f;
 
-    private CapsuleCollider coll;
+    private SphereCollider coll;
     private AudioSource audioS;
     private SpriteRenderer rend;
 }

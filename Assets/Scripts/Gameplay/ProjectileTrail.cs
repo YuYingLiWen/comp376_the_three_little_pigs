@@ -1,9 +1,10 @@
 using UnityEngine;
 
+[RequireComponent(typeof(LineRenderer))]
 public class ProjectileTrail : MonoBehaviour
 {
 
-    [SerializeField] LineRenderer line;
+    LineRenderer line;
 
     const float outOfView = 1000.0f;
 
@@ -15,7 +16,6 @@ public class ProjectileTrail : MonoBehaviour
     void Awake()
     {
         line = GetComponent<LineRenderer>();
-        line.sortingLayerName = "Middle";
     }
 
     // Update is called once per frame

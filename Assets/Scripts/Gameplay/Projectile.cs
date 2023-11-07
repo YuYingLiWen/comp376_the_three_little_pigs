@@ -1,9 +1,13 @@
 
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+[RequireComponent(typeof(Rigidbody), typeof(Collider))]
+public abstract class Projectile : MonoBehaviour
 {
-    Rigidbody rigid;
+    protected Rigidbody rigid;
+
+    [SerializeField] protected float speed = 13.0f;
+
 
     private void Awake()
     {
@@ -13,6 +17,6 @@ public class Projectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rigid.MovePosition(rigid.position + transform.up * 13.0f * Time.deltaTime);   
+        rigid.MovePosition(rigid.position + transform.up * speed * Time.deltaTime);   
     }
 }
