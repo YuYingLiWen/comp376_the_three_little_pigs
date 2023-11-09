@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class Towers : MonoBehaviour, ITower, IInteractable
 {
     [SerializeField] private Vector3 exit;
-
+    [SerializeField] Transform night_fov;
     private List<GameObject> garrisonedUnits = new();
     private List<GameObject> enemiesInRange = new();
 
@@ -34,6 +34,9 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
 
     protected virtual void Update()
     {
+        night_fov.position = Camera.main.WorldToScreenPoint(transform.position);
+
+
         if (enemiesInRange.Count <= 0 && target == null) return;
 
         if(!target)
