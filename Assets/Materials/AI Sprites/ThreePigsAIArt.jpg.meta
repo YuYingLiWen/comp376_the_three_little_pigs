@@ -128,7 +128,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      ThreePigsAIArt_0: 5977856901386601335
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
