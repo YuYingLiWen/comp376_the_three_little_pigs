@@ -7,19 +7,19 @@ using UnityEngine;
 /// Goal: Checks win & lose conditions.
 /// </summary>
 
-public class LevelManager : MonoBehaviour
+public sealed class LevelManager : MonoBehaviour
 {
     [SerializeField] private float cameraScrollSpeed = 1.0f;
 
-    private GameManager gameManager;
-    private InputSystem inputSystem;
+    GameManager gameManager;
+    InputSystem inputSystem;
 
     public Action OnGameOver;
     public Action OnGameWon;
 
+
+    [SerializeField] NightBehavior nightBehavior;
     //Cache
-    private Camera cam;
-    private Ray mouseRay;
 
     // gather 1000 stones
 
@@ -27,8 +27,6 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
-        cam = Camera.main;
-
         gameManager = GameManager.GetInstance();
         if (!gameManager) Debug.LogError("Missing Game Manager", gameObject);
 
@@ -45,6 +43,11 @@ public class LevelManager : MonoBehaviour
 
         inputSystem.OnMouseLeftClick += HandleMouseLeftClick;
         inputSystem.OnMapScroll += HandleMapScroll;
+    }
+
+    private void Start()
+    {
+        StartCoroutine(DayNightRoutine());
     }
 
     private void OnDisable()
@@ -69,29 +72,33 @@ public class LevelManager : MonoBehaviour
 
     private void HandleMapScroll(Vector2 axis)
     {
-        cam.transform.Translate(axis * Time.deltaTime);
     }
 
     private void HandleMouseLeftClick()
     {
-        mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        
+    }
 
-        Debug.DrawLine(mouseRay.origin, mouseRay.direction * 1000f, Color.red);
 
-        RaycastHit hit;
+    IEnumerator DayNightRoutine()
+    {
+        bool toggle = false;
 
-        if (Physics.Raycast(mouseRay, out hit, float.MaxValue))
+        while(true)
         {
-            var gameObject = hit.collider.gameObject;
+            if(toggle)
+            {
+                nightBehavior.ToDay();
+            }else
+            {
+                nightBehavior.ToNight();
+            }
 
-            if (gameObject.CompareTag("Enemy")) // Example 
-            {
-                gameObject.GetComponent<TestEnemy>().Click();
-            }
-            else
-            {
-                Debug.Log(gameObject.name); // Example
-            }
+            toggle = !toggle;
+
+            yield return new WaitForSeconds(delayBetweenCycle);
         }
     }
+
+    [SerializeField] float delayBetweenCycle = 10.0f;
 }

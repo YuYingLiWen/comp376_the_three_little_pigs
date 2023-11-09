@@ -19,8 +19,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioManager audioManager = null;
 
     // Game Pause
-    private enum GameState { PLAY, PAUSED, MAIN_MENU, CREDITS };
+    public enum GameState { PLAY, PAUSED, MAIN_MENU, CREDITS };
     private GameState currentGameState = GameState.MAIN_MENU;
+
+    public GameState GetGameState => currentGameState;
 
     public Action OnGamePause;
 
