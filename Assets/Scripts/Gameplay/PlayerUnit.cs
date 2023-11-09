@@ -31,15 +31,10 @@ public class PlayerUnit : MonoBehaviour
         }
     }
 
-<<<<<<< Updated upstream
-    private void Update()
-    {
-        night_fov.position = Camera.main.WorldToScreenPoint(transform.position);
-    }
-
-=======
     void Update()
     {
+        night_fov.position = Camera.main.WorldToScreenPoint(transform.position);
+
         if (targetTree != null)
         {
             //Debug.Log("transform.position: " + transform.position + "targetTree.transform.position: " + targetTree.transform.position);
@@ -89,7 +84,7 @@ public class PlayerUnit : MonoBehaviour
 
         return houseSize;
     }
->>>>>>> Stashed changes
+
     public void SetDestination(Vector3 location)
     {
         navMeshAgent.SetDestination(location);
