@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6831025587881710166}
   - component: {fileID: 7836990245207298374}
-  - component: {fileID: 2473601983859359832}
+  - component: {fileID: 5845320652787089077}
   m_Layer: 5
   m_Name: NightFOV
   m_TagString: Untagged
@@ -45,7 +45,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5168819528293433059}
   m_CullTransparentMesh: 1
---- !u!114 &2473601983859359832
+--- !u!114 &5845320652787089077
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

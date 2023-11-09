@@ -23,6 +23,7 @@ public class LevelManager : MonoBehaviour
 
     // gather 1000 stones
 
+    public bool debug = false;
 
     private void Awake()
     {
@@ -31,11 +32,14 @@ public class LevelManager : MonoBehaviour
         gameManager = GameManager.GetInstance();
         if (!gameManager) Debug.LogError("Missing Game Manager", gameObject);
 
-        inputSystem = gameManager.GetInputSystem();
+        if(!debug) inputSystem = gameManager.GetInputSystem();
     }
 
     private void OnEnable()
     {
+        if (debug) return;
+
+
         OnGameOver += gameManager.HandleGameOver;
         OnGameWon += gameManager.HandleGameWon;
 
@@ -45,6 +49,8 @@ public class LevelManager : MonoBehaviour
 
     private void OnDisable()
     {
+        if (debug) return;
+
         OnGameOver -= gameManager.HandleGameOver;
         OnGameWon -= gameManager.HandleGameWon;
 
