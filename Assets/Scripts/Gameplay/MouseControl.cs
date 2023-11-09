@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Timeline;
+using System.Runtime.CompilerServices;
 
 public class MouseControl : MonoBehaviour
 {
@@ -66,8 +67,11 @@ public class MouseControl : MonoBehaviour
                     {
                         selectedPig.SetDestination(hit.point);
                         Instantiate(markerPrefab, hit.point + new Vector3(0.0f, 0.1f, 0.0f), markerPrefab.transform.rotation);
+                    } else if (hit.collider.tag == "Tree")// else if tag is tree then go fetch tree
+                    {
+                        CollectTree(selectedPig, hit);
                     }
-                    // else if tag is tree then go fetch tree
+                    
                     // else if tag is tower then man tower...
                 }
 
@@ -76,8 +80,17 @@ public class MouseControl : MonoBehaviour
         }
     }
 
-
-
+    // Pig goes get the tree and brings back wood to the house
+    private void CollectTree(PlayerUnit selectedPig, RaycastHit hit)
+    {
+        GameObject tree = hit.collider.gameObject;
+        if (tree != null)
+        {
+            // tree will now be stored in the PlayerUnit object and used in OnCollisionEnter to collect
+            selectedPig.targetTree = tree;
+            selectedPig.SetDestination(tree.transform.position);
+        }
+    }
 
     // Deselect the selected object
     private void DeselectObject()

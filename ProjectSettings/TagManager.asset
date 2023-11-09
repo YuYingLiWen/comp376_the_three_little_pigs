@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Ground
   - House
+  - Enemy
+  - Tree
   layers:
   - Default
   - TransparentFX
