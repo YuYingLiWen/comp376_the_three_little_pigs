@@ -14,7 +14,6 @@ public class GameManager : MonoBehaviour
 
     /// The following are serizlized for debugging purposes
     [SerializeField] private SceneDirector sceneDirector = null;
-    [SerializeField] private LevelManager levelManager = null;
     [SerializeField] private InputSystem inputSystem = null;
     [SerializeField] private AudioManager audioManager = null;
 
