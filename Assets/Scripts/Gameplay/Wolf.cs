@@ -1,10 +1,23 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Wolf : MonoBehaviour
+public class Wolf : MonoBehaviour, IDamageable
 {
     Transform target;
     NavMeshAgent agent;
+
+    Health health;
+
+    public void TakeDamage(int damage)
+    {
+        health.TakeDamage(damage);
+
+        if(!health.IsAlive())
+        {
+            // VFX SFX & etc
+            WolfPooler.Instance.Pool.Release(this.gameObject);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -21,9 +34,24 @@ public class Wolf : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        health = new Health(3);
+    }
+
     // Update is called once per frame
     void Update()
     {
         agent.SetDestination(target.position);
+    }
+
+    public bool IsDead()
+    {
+        return !health.IsAlive();
+    }
+
+    public GameObject ThisObject()
+    {
+        return gameObject;
     }
 }

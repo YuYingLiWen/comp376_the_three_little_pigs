@@ -88,10 +88,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1574aa310c68f654fa605e2afc6808d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  night: {fileID: 0}
+  night: {fileID: 5812370773205320149}
   day_color: {r: 0, g: 0, b: 0, a: 0}
   night_color: {r: 0, g: 0, b: 0, a: 1}
-  time: 5
+  time: 1
 --- !u!1 &8322084497451890420
 GameObject:
   m_ObjectHideFlags: 0

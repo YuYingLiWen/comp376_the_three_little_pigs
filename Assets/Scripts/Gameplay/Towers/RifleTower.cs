@@ -24,7 +24,14 @@ public sealed class RifleTower : Towers
         ps.transform.up = target.position - transform.position;
         ps.Play();
 
-        //target.GetComponent<Wolf>().TakeDamage(so.Attack);
+        var enemy = target.GetComponent<IDamageable>();
+
+        enemy.TakeDamage(so.Attack);
+        if(enemy.IsDead())
+        {
+            target = null;
+            enemiesInRange.Remove(enemy.ThisObject());
+        }
     }
 
     private IEnumerator PlayVFX()
@@ -65,5 +72,5 @@ public sealed class RifleTower : Towers
     }
 
     //Cache
-    static readonly WaitForSeconds waitForLineVFX = new (0.25f);
+    static readonly WaitForSeconds waitForLineVFX = new (0.02f);
 }

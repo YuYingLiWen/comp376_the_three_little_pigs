@@ -8,7 +8,7 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
     [SerializeField] private Vector3 exit;
     [SerializeField] Transform night_fov;
     private List<GameObject> garrisonedUnits = new();
-    private List<GameObject> enemiesInRange = new();
+    protected List<GameObject> enemiesInRange = new();
 
     protected int currentTier = 0; // Used for upgrade
 
