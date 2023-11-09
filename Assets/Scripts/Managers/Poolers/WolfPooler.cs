@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Pool;
 
-public class BloodPooler : GameObjectPooler<GameObject>
+public class WolfPooler : GameObjectPooler<GameObject>
 {
 
     private void Awake()
@@ -40,6 +40,6 @@ public class BloodPooler : GameObjectPooler<GameObject>
     private ObjectPool<GameObject> pool;
     public ObjectPool<GameObject> Pool => pool;
 
-    private static BloodPooler instance;
-    public static BloodPooler Instance => instance;
+    private static WolfPooler instance;
+    public static WolfPooler Instance => instance;
 }
