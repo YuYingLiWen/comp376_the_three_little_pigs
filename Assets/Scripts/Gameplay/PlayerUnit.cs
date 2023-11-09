@@ -10,8 +10,14 @@ public class PlayerUnit : MonoBehaviour
     bool carryingWood = false;
     Vector3 housePos = Vector3.zero;
     GameObject house;
+    private LevelManager levelManager;
 
     [SerializeField] Transform night_fov;
+
+    private void Awake()
+    {
+        levelManager = FindFirstObjectByType<LevelManager>();
+    }
 
     void Start()
     {
@@ -59,7 +65,7 @@ public class PlayerUnit : MonoBehaviour
                 Debug.Log("Wood depositied! Update ressources here (like +10 wood)");
 
                 // update ressources and related UI here
-
+                levelManager.AddResources(10, "wood");
             }
         }
     }

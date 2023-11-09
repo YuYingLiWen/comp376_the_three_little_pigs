@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 /// <summary>
@@ -17,8 +18,11 @@ public sealed class LevelManager : MonoBehaviour
     public Action OnGameOver;
     public Action OnGameWon;
 
+    TMP_Text wood, stone, wave, timer;
+    float timeLeft;
 
     [SerializeField] NightBehavior nightBehavior;
+    [SerializeField] GameObject uiOverlay;
     //Cache
 
     // gather 1000 stones
@@ -48,6 +52,36 @@ public sealed class LevelManager : MonoBehaviour
     private void Start()
     {
         StartCoroutine(DayNightRoutine());
+
+        TMP_Text[] resourceTexts = uiOverlay.GetComponentsInChildren<TMP_Text>();
+        foreach (TMP_Text text in resourceTexts)
+        {
+            if (text.name == "WoodCount")
+            {
+                wood = text;
+            }
+            else if (text.name == "StoneCount")
+            {
+                stone = text;
+            }
+            else if (text.name == "WaveNum")
+            {
+                wave = text;
+            }
+            else if (text.name == "Timer")
+            {
+                timer = text;
+                timeLeft = float.Parse(timer.text);
+            }
+        }
+
+    }
+
+    private void Update()
+    {
+        timeLeft -= Time.deltaTime;
+        timer.text = timeLeft.ToString("0");
+
     }
 
     private void OnDisable()
@@ -77,6 +111,24 @@ public sealed class LevelManager : MonoBehaviour
     private void HandleMouseLeftClick()
     {
         
+    }
+
+    public void AddResources(int amt, string resourceType)
+    {
+        switch (resourceType)
+        {
+            case "wood":
+                int temp = Int32.Parse(wood.text) + amt;
+                wood.text = (Int32.Parse(wood.text) + amt).ToString();
+                Debug.Log("temp: " + temp);
+                Debug.Log("text: " + wood.text);
+                break;
+            case "stone":
+                stone.text = (Int32.Parse(stone.text) + amt).ToString();
+                break;
+            default:
+                break;
+        }
     }
 
 

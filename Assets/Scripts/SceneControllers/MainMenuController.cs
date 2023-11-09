@@ -29,4 +29,13 @@ public class MainMenuController : MonoBehaviour
         Debug.Log("Clieck load ");
         sceneDirector.Load(SceneDirector.SceneNames.LEVEL1_SCENE, true);
     }
+
+    public void ExitGame()
+    {
+        Debug.Log("Exit Game");
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #endif
+        Application.Quit();
+    }
 }
