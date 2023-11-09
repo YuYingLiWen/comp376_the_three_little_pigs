@@ -241,7 +241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraScrollSpeed: 5
   nightBehavior: {fileID: 1945831088}
-  uiOverlay: {fileID: 0}
+  uiOverlay: {fileID: 2074039295}
   debug: 1
   delayBetweenCycle: 5
 --- !u!4 &156483358
