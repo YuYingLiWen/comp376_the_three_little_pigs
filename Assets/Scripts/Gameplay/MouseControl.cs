@@ -1,7 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.Timeline;
-using System.Runtime.CompilerServices;
 
 public class MouseControl : MonoBehaviour
 {
