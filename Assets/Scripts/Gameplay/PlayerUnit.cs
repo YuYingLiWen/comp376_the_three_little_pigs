@@ -64,8 +64,8 @@ public class PlayerUnit : MonoBehaviour, IInteractable
                 carryingWood = false;
                 Debug.Log("Wood depositied! Update ressources here (like +10 wood)");
 
-                // update ressources and related UI here
-                levelManager.AddResources(10, "wood");
+                // update ressources 
+                levelManager.AddWood(10);
             }
         }
     }
