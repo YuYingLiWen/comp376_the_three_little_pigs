@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(SphereCollider), typeof(SpriteRenderer), typeof(AudioSource))]
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Collider), typeof(SpriteRenderer), typeof(AudioSource))]
 public abstract class Towers : MonoBehaviour, ITower, IInteractable
 {
     [SerializeField] private Vector3 exit;
@@ -27,9 +26,11 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
     protected virtual void Start()
     {
         so = TowersUpgrades.GetInstance().GetArrowTier1SO;
-        coll.radius = so.Range;
         
-        GetComponent<Rigidbody>().isKinematic = true;
+        // Set ranges
+        coll.radius = so.Range;
+        rangeIndicator.transform.localScale = Vector3.one * so.Range;
+        night_fov.localScale = Vector3.one * so.Range;
     }
 
     protected virtual void Update()
@@ -55,7 +56,7 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Trigger enter: " + other.name);
+        //Debug.Log("Trigger enter: " + other.name);
 
         if (other.CompareTag("Enemy"))
         {
@@ -65,7 +66,7 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
 
     protected virtual void OnTriggerExit(Collider other)
     {
-        Debug.Log("Trigger Exit: " + other.name);
+        //Debug.Log("Trigger Exit: " + other.name);
 
         if (other.CompareTag("Enemy"))
         {
@@ -133,14 +134,7 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
         currentTier += 1;
     }
 
-    public void OnClick()
-    {
-        audioS.Stop();
-        audioS.PlayOneShot(so.OnClickSFX);
-    }
-
     // The tower fires its weapon
-    [ContextMenu("Fire")]
     protected virtual void Fire()
     {
         Debug.DrawRay(transform.position, target.position - transform.position, Color.yellow, 5.0f);
@@ -150,13 +144,31 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
 
     protected virtual void OnFire()
     {
-        audioS.Stop();
-        audioS.PlayOneShot(so.OnShootSFX);
+        //audioS.Stop();
+        //audioS.PlayOneShot(so.OnShootSFX);
     }
 
     protected virtual void OnTierChange()
     {
         rend.sprite = so.TowerSprite;
+    }
+
+    public void OnClick()
+    {
+        //audioS.Stop();
+        //audioS.PlayOneShot(so.OnClickSFX);
+
+        rangeIndicator.SetActive(true);
+
+        Debug.Log("Clicked " + name);
+    }
+
+    public void Deselect()
+    {
+        rangeIndicator.SetActive(false);
+
+        Debug.Log("Deseelect " + name);
+
     }
 
     //Cache
@@ -168,6 +180,8 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
     private SphereCollider coll;
     private AudioSource audioS;
     private SpriteRenderer rend;
+
+    [SerializeField] GameObject rangeIndicator;
 }
 
 internal interface ITower
@@ -186,4 +200,6 @@ internal interface ITower
 internal interface IInteractable
 {
     void OnClick();
+
+    void Deselect();
 }

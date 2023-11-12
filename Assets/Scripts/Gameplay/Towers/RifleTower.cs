@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
-public sealed class RifleTower : Towers
+public sealed class RifleTower : Towers, IInteractable
 {
     ParticleSystem ps;
     LineRenderer line;
