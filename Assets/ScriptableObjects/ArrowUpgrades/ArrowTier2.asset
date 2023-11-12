@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ArrowTier2
   m_EditorClassIdentifier: 
   attack: 2
-  range: 4
+  range: 14
   delayPerShot: 1
   maxTier: 2
   tower: {fileID: 0}
