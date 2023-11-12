@@ -15,6 +15,8 @@ public sealed class LevelManager : MonoBehaviour
 
     [SerializeField] NightBehavior nightBehavior;
     [SerializeField] GameObject uiOverlay;
+    Cave[] caves;
+
     //Cache
 
     // gather 1000 stones
@@ -27,12 +29,15 @@ public sealed class LevelManager : MonoBehaviour
         if (!gameManager) Debug.LogError("Missing Game Manager", gameObject);
 
         if(!debug) inputSystem = gameManager.GetInputSystem();
+
+        caves = FindObjectsByType<Cave>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+
+        Debug.Log(caves.Length);
     }
 
     private void OnEnable()
     {
         if (debug) return;
-
 
         OnGameOver += gameManager.HandleGameOver;
         OnGameWon += gameManager.HandleGameWon;
@@ -109,12 +114,18 @@ public sealed class LevelManager : MonoBehaviour
     {
         if (amount < 0) return;
         resourceWood += amount;
+
+        // Update UI
+
     }
 
     public void AddStone(int amount)
     {
         if (amount < 0) return;
         resourceStone += amount;
+
+        // Update UI
+
     }
 
     public void ConsumeWood(int amount)
@@ -125,6 +136,8 @@ public sealed class LevelManager : MonoBehaviour
             return;
         }
         resourceWood -= amount;
+
+        // Update UI
     }
 
     public void ConsumeStone(int amount)
@@ -135,6 +148,8 @@ public sealed class LevelManager : MonoBehaviour
             return;
         }
         resourceStone -= amount;
+
+        // Update UI
     }
 
     public void AddResources(int amt, string resourceType)
@@ -158,21 +173,34 @@ public sealed class LevelManager : MonoBehaviour
 
     IEnumerator DayNightRoutine()
     {
-        bool toggle = false;
+        bool night = true;
 
+        float timeElapsed = 0.0f;
         while(true)
         {
-            if(toggle)
+            if(timeElapsed >= delayBetweenCycle)
             {
-                nightBehavior.ToDay();
-            }else
-            {
-                nightBehavior.ToNight();
+                if (night)
+                {
+                    nightBehavior.ToDay();
+                    foreach(Cave cave in caves) cave.Spawn();
+                }
+                else
+                {
+                    nightBehavior.ToNight();
+                    foreach (Cave cave in caves) cave.StopAllCoroutines();
+                }
+
+                night = !night;
+                timeElapsed = 0.0f;
+                waveNum += 1;
+                
+                // Update Wave Number & Time here
+
             }
 
-            toggle = !toggle;
-
-            yield return new WaitForSeconds(delayBetweenCycle);
+            timeElapsed += Time.deltaTime;
+            yield return null;
         }
     }
 

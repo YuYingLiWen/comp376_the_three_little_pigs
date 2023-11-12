@@ -242,7 +242,7 @@ MonoBehaviour:
   nightBehavior: {fileID: 1945831088}
   uiOverlay: {fileID: 2074039295}
   debug: 1
-  delayBetweenCycle: 60
+  delayBetweenCycle: 10
 --- !u!4 &156483358
 Transform:
   m_ObjectHideFlags: 0

@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class Cave : MonoBehaviour
 {
-
-    private void Start()
+    public void Spawn()
     {
         StartCoroutine(SpawnRoutine());
     }
