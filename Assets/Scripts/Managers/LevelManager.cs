@@ -10,14 +10,6 @@ using UnityEngine;
 
 public sealed class LevelManager : MonoBehaviour
 {
-    [SerializeField] private float cameraScrollSpeed = 1.0f;
-
-    GameManager gameManager;
-    InputSystem inputSystem;
-
-    public Action OnGameOver;
-    public Action OnGameWon;
-
     TMP_Text wood, stone, wave, timer;
     float timeLeft;
 
@@ -113,6 +105,38 @@ public sealed class LevelManager : MonoBehaviour
         
     }
 
+    public void AddWood(int amount)
+    {
+        if (amount < 0) return;
+        resourceWood += amount;
+    }
+
+    public void AddStone(int amount)
+    {
+        if (amount < 0) return;
+        resourceStone += amount;
+    }
+
+    public void ConsumeWood(int amount)
+    {
+        if (amount - resourceWood < 0)
+        {
+            Debug.Log("Not enough woods.");
+            return;
+        }
+        resourceWood -= amount;
+    }
+
+    public void ConsumeStone(int amount)
+    {
+        if (amount -resourceStone < 0)
+        {
+            Debug.Log("Not enough stone.");
+            return;
+        }
+        resourceStone -= amount;
+    }
+
     public void AddResources(int amt, string resourceType)
     {
         switch (resourceType)
@@ -152,5 +176,16 @@ public sealed class LevelManager : MonoBehaviour
         }
     }
 
+    int waveNum = 1;
+
+    // Resources
+    int resourceWood = 0, resourceStone = 0;
+
     [SerializeField] float delayBetweenCycle = 10.0f;
+
+    GameManager gameManager;
+    InputSystem inputSystem;
+
+    public Action OnGameOver;
+    public Action OnGameWon;
 }

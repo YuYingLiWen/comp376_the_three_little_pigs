@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
 
-public class PlayerUnit : MonoBehaviour
+public class PlayerUnit : MonoBehaviour, IInteractable
 {
     NavMeshAgent navMeshAgent;
     public GameObject targetTree;// = Vector3.zero;
@@ -10,6 +10,7 @@ public class PlayerUnit : MonoBehaviour
     Vector3 housePos = Vector3.zero;
     GameObject house;
     private LevelManager levelManager;
+    private Color originalColor;
 
     [SerializeField] Transform night_fov;
 
@@ -93,6 +94,40 @@ public class PlayerUnit : MonoBehaviour
     public void SetDestination(Vector3 location)
     {
         navMeshAgent.SetDestination(location);
+    }
+
+    public void OnClick()
+    {
+        Renderer renderer = GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            originalColor = renderer.material.color;
+        }
+
+        // Change the object's color to indicate selection
+        ChangeObjectColor(Color.red);
+        Debug.Log("Clicked " + name);
+    }
+    public void Deselect()
+    {
+        //TODO: Put color change and wtv that has to do with this object here
+        Renderer renderer = GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            renderer.material.color = originalColor;
+        }
+
+        Debug.Log("Deselect " + name);
+
+    }
+    // Change the color of a selected object
+    private void ChangeObjectColor(Color color)
+    {
+        Renderer renderer = GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            renderer.material.color = color;
+        }
     }
 
 }

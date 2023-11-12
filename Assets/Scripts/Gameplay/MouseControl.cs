@@ -10,7 +10,6 @@ public class MouseControl : MonoBehaviour
     Marker markerPrefab;
 
     private GameObject selectedObject;
-    private Color originalColor;
 
     private void Update()
     {
@@ -19,32 +18,24 @@ public class MouseControl : MonoBehaviour
             // Send ray
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-
+            
+            Debug.DrawLine(ray.origin, ray.direction * 1000.0f, Color.red, 10.0f);
+            
             // If ray hit something
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit, 500.0f, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore))
             {
                 // Deselect any previously selected object
                 if (selectedObject != null)
                 {
-                    DeselectObject();
+                    var selectInteract = selectedObject.GetComponent<IInteractable>();
+                    if(selectedObject != null) selectInteract.Deselect();
                 }
 
-                // Check if the object is a player (pig)
-                PlayerUnit pig = hit.collider.GetComponent<PlayerUnit>();
-
-                if (pig != null)
+                var interactable = hit.collider.GetComponent<IInteractable>();
+                if(interactable != null)
                 {
                     selectedObject = hit.collider.gameObject;
-
-                    // Store the original color (if the object has a renderer)
-                    Renderer renderer = selectedObject.GetComponent<Renderer>();
-                    if (renderer != null)
-                    {
-                        originalColor = renderer.material.color;
-                    }
-
-                    // Change the object's color to indicate selection
-                    ChangeObjectColor(selectedObject, Color.red);
+                    interactable.OnClick();
                 }
             }
         }
@@ -53,16 +44,24 @@ public class MouseControl : MonoBehaviour
             // Send ray
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
+            Debug.DrawLine(ray.origin, ray.direction * 1000.0f, Color.blue, 10.0f);
+
+            Debug.Log("1");
 
             // If ray hit something & and we have a selected object
-            if (Physics.Raycast(ray, out hit) && selectedObject != null)
+            if (Physics.Raycast(ray, out hit,500.0f, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore) && selectedObject != null)
             {
+                Debug.Log("2");
+
                 PlayerUnit selectedPig = selectedObject.GetComponent<PlayerUnit>();
                 
                 if (selectedPig != null) // if selected object is a pig
                 {
+                    Debug.Log("null test" + hit.collider.name + hit.collider.tag);
+
                     if (hit.collider.tag == "Ground") // move
                     {
+                        Debug.Log("Groind");
                         selectedPig.SetDestination(hit.point);
                         Instantiate(markerPrefab, hit.point + new Vector3(0.0f, 0.1f, 0.0f), markerPrefab.transform.rotation);
                     } else if (hit.collider.tag == "Tree")// else if tag is tree then go fetch tree
@@ -89,31 +88,4 @@ public class MouseControl : MonoBehaviour
             selectedPig.SetDestination(tree.transform.position);
         }
     }
-
-    // Deselect the selected object
-    private void DeselectObject()
-    {
-        if (selectedObject != null)
-        {
-            // Restore the original look
-            Renderer renderer = selectedObject.GetComponent<Renderer>();
-            if (renderer != null)
-            {
-                renderer.material.color = originalColor;
-            }
-
-            selectedObject = null;
-        }
-    }
-
-    // Change the color of a selected object
-    private void ChangeObjectColor(GameObject obj, Color color)
-    {
-        Renderer renderer = obj.GetComponent<Renderer>();
-        if (renderer != null)
-        {
-            renderer.material.color = color;
-        }
-    }
-
 }
