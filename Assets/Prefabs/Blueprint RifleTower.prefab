@@ -4986,9 +4986,10 @@ GameObject:
   - component: {fileID: 6737918327310389064}
   - component: {fileID: -1349524383481938257}
   - component: {fileID: 5942036630811338201}
-  - component: {fileID: 7840000987426014476}
+  - component: {fileID: 9144477924413905837}
+  - component: {fileID: -6077861864003267347}
   m_Layer: 0
-  m_Name: RifleTower
+  m_Name: Blueprint RifleTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5070,7 +5071,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: -8078966772632430244, guid: f64b1d3f025af934d9426fde28d4787a, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.35686275}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -5349,7 +5350,20 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!136 &7840000987426014476
+--- !u!114 &9144477924413905837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6254548530364296786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b30577b7e7831c54bb8df852751debcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 6254548530364296786, guid: f1d4508f4e692e04f802961b1be28b64, type: 3}
+--- !u!136 &-6077861864003267347
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5368,8 +5382,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.865
-  m_Height: 3.08
+  m_Radius: 0.5
+  m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7629898423894628555
