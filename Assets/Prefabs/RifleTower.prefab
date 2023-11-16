@@ -4985,7 +4985,6 @@ GameObject:
   - component: {fileID: 7513127032873854642}
   - component: {fileID: 6737918327310389064}
   - component: {fileID: -1349524383481938257}
-  - component: {fileID: 5942036630811338201}
   - component: {fileID: 7840000987426014476}
   m_Layer: 0
   m_Name: RifleTower
@@ -5324,30 +5323,9 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &5942036630811338201
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6254548530364296786}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &7840000987426014476
 CapsuleCollider:
