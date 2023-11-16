@@ -25,11 +25,14 @@ public class MouseControl : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 500.0f, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore))
             {
                 // Deselect any previously selected object
-                if (selectedObject != null)
+                if (selectedObject != null) // We have a selected object
                 {
                     var selectInteract = selectedObject.GetComponent<IInteractable>();
                     if(selectedObject != null) selectInteract.Deselect();
+
+                    selectedObject = null;
                 }
+
 
                 var interactable = hit.collider.GetComponent<IInteractable>();
                 if(interactable != null)
