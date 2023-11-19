@@ -19,6 +19,11 @@ public class PlayerUnit : MonoBehaviour, IInteractable
         levelManager = FindFirstObjectByType<LevelManager>();
     }
 
+    private void OnEnable()
+    {
+        if (!uiControl) uiControl = FindFirstObjectByType<OverlayUIController>();
+    }
+
     void Start()
     {
         // By default, 2D sprites get tilted 90 degrees upon pressing play if they have a NavMeshAgent 
@@ -104,6 +109,7 @@ public class PlayerUnit : MonoBehaviour, IInteractable
             originalColor = renderer.material.color;
         }
 
+        uiControl.DisplayBuildMenu(true);
         // Change the object's color to indicate selection
         ChangeObjectColor(Color.red);
         Debug.Log("Clicked " + name);
@@ -116,6 +122,8 @@ public class PlayerUnit : MonoBehaviour, IInteractable
         {
             renderer.material.color = originalColor;
         }
+        uiControl.DisplayBuildMenu(false);
+
 
         Debug.Log("Deselect " + name);
 
@@ -129,5 +137,8 @@ public class PlayerUnit : MonoBehaviour, IInteractable
             renderer.material.color = color;
         }
     }
+
+    private static OverlayUIController uiControl;
+
 
 }

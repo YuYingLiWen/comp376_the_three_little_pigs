@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 public class MouseControl : MonoBehaviour
 {
@@ -9,11 +10,13 @@ public class MouseControl : MonoBehaviour
     [SerializeField]
     Marker markerPrefab;
 
+    [SerializeField] OverlayUIController UIControl;
+
     private GameObject selectedObject;
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0)) // left click (to select object)
+        if (Input.GetMouseButtonDown(0) && !IsPointerOverUI()) // left click (to select object)
         {
             // Send ray
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -24,6 +27,8 @@ public class MouseControl : MonoBehaviour
             // If ray hit something
             if (Physics.Raycast(ray, out hit, 500.0f, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore))
             {
+                Debug.Log("Left Click Hit: " + hit.collider.name);
+
                 // Deselect any previously selected object
                 if (selectedObject != null) // We have a selected object
                 {
@@ -49,13 +54,9 @@ public class MouseControl : MonoBehaviour
             RaycastHit hit;
             Debug.DrawLine(ray.origin, ray.direction * 1000.0f, Color.blue, 10.0f);
 
-            Debug.Log("1");
-
             // If ray hit something & and we have a selected object
             if (Physics.Raycast(ray, out hit,500.0f, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore) && selectedObject != null)
             {
-                Debug.Log("2");
-
                 PlayerUnit selectedPig = selectedObject.GetComponent<PlayerUnit>();
                 
                 if (selectedPig != null) // if selected object is a pig
@@ -78,6 +79,11 @@ public class MouseControl : MonoBehaviour
                 // if the selected object is tower, do tower related stuff etc.
             }
         }
+    }
+
+    private bool IsPointerOverUI()
+    {
+        return EventSystem.current.IsPointerOverGameObject();
     }
 
     // Pig goes get the tree and brings back wood to the house

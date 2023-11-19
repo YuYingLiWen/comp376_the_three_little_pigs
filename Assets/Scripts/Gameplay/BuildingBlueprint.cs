@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BuildingBlueprint : MonoBehaviour
@@ -24,7 +22,7 @@ public class BuildingBlueprint : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("BuildLayer"), QueryTriggerInteraction.Ignore))
         {
             transform.position = hit.point; // move the blueprint with the mouse
         }

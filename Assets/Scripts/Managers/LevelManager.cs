@@ -152,6 +152,12 @@ public sealed class LevelManager : MonoBehaviour
         // Update UI
     }
 
+    public void ConsumeResources(int wood, int stone)
+    {
+        ConsumeStone(stone);
+        ConsumeWood(wood);
+    }
+
     public void AddResources(int amt, string resourceType)
     {
         switch (resourceType)
@@ -170,6 +176,9 @@ public sealed class LevelManager : MonoBehaviour
         }
     }
 
+
+    public int Stone => resourceStone;
+    public int Wood => resourceWood;
 
     IEnumerator DayNightRoutine()
     {

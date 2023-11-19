@@ -18,6 +18,9 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
 
     protected virtual void Awake()
     {
+        if (!levelManager) levelManager = FindFirstObjectByType<LevelManager>();
+        if (!uiControl) uiControl = FindFirstObjectByType<OverlayUIController>();
+
         coll = gameObject.GetComponent<SphereCollider>();
         audioS = gameObject.GetComponent<AudioSource>();
         rend = gameObject.GetComponent<SpriteRenderer>();
@@ -75,6 +78,12 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
         }
     }
 
+    private void OnDisable()
+    {
+        levelManager = null;
+        uiControl = null;
+    }
+
     // Pick a target. Default pick the closest.
     protected virtual void SelectTarget()
     {
@@ -124,9 +133,6 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
         pig.SetActive(false);
     }
 
-    /// <summary>
-    /// Upgrades tower to next tier.
-    /// </summary>
     public virtual void Upgrade()
     {
         if (currentTier + 1 > so.MaxTier) return;
@@ -159,6 +165,7 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
         //audioS.PlayOneShot(so.OnClickSFX);
 
         rangeIndicator.SetActive(true);
+        uiControl.DisplayUpgradeTowerMenu(true, this.gameObject);
 
         Debug.Log("Clicked " + name);
     }
@@ -166,10 +173,21 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
     public void Deselect()
     {
         rangeIndicator.SetActive(false);
+        uiControl.DisplayUpgradeTowerMenu(false);
 
         Debug.Log("Deseelect " + name);
 
     }
+
+    public virtual void Sell()
+    {
+        Debug.Log("Sell Tower");
+
+        Destroy(gameObject);
+    }
+
+
+    private static OverlayUIController uiControl;
 
     //Cache
     Vector3 position;
@@ -182,9 +200,11 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
     private SpriteRenderer rend;
 
     [SerializeField] GameObject rangeIndicator;
+
+    private static LevelManager levelManager;
 }
 
-internal interface ITower
+public interface ITower
 {
     /// <summary>
     /// To have man the tower.
@@ -195,6 +215,17 @@ internal interface ITower
     /// To have ALL units abandon tower.
     /// </summary>
     void Abandon();
+
+
+    /// <summary>
+    /// Upgrades tower to next tier.
+    /// </summary>
+    void Upgrade();
+
+    /// <summary>
+    /// Sell the tower.
+    /// </summary>
+    void Sell();
 }
 
 internal interface IInteractable
