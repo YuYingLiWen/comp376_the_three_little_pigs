@@ -17,13 +17,18 @@ public class OverlayUIController : MonoBehaviour
         playerBuildMenu.SetActive(active);
     }
 
-    public void DisplayUpgradeTowerMenu(bool active, GameObject selectedTower = null)
+    public void DisplayUpgradeTowerMenu(bool active)
     {
         upgradeTowerUI.SetActive(active);
 
         if (!active) return;
 
         if (!towerUpgradeScript) towerUpgradeScript = upgradeTowerUI.GetComponent<UpgradeTower>();
+    }
+
+    public void DisplayUpgradeTowerMenu(bool active, GameObject selectedTower)
+    {
+        DisplayUpgradeTowerMenu(active);
 
         towerUpgradeScript.SetTower(selectedTower.GetComponent<ITower>());
     }

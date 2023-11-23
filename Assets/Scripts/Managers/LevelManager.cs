@@ -168,7 +168,7 @@ public sealed class LevelManager : MonoBehaviour
 
     void UpdateStoneUI()
     {
-        stoneUI.text = resourceWood.ToString();
+        stoneUI.text = resourceStone.ToString();
     }
 
     void UpdateWoodUI()

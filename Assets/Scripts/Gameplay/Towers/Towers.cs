@@ -166,6 +166,7 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
 
         rangeIndicator.SetActive(true);
         uiControl.DisplayUpgradeTowerMenu(true, this.gameObject);
+        uiControl.DisplayBuildMenu(false);
 
         Debug.Log("Clicked " + name);
     }

@@ -110,6 +110,8 @@ public class PlayerUnit : MonoBehaviour, IInteractable
         }
 
         uiControl.DisplayBuildMenu(true);
+        uiControl.DisplayUpgradeTowerMenu(false);
+
         // Change the object's color to indicate selection
         ChangeObjectColor(Color.red);
         Debug.Log("Clicked " + name);
