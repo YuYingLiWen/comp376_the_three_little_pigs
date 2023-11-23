@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 /// <summary>
 /// Goal: Checks win & lose conditions.
@@ -10,16 +12,11 @@ using UnityEngine;
 
 public sealed class LevelManager : MonoBehaviour
 {
-    TMP_Text wood, stone, wave, timer;
-    float timeLeft;
-
     [SerializeField] NightBehavior nightBehavior;
     [SerializeField] GameObject uiOverlay;
     Cave[] caves;
 
     //Cache
-
-    // gather 1000 stones
 
     public bool debug = false;
 
@@ -50,35 +47,12 @@ public sealed class LevelManager : MonoBehaviour
     {
         StartCoroutine(DayNightRoutine());
 
-        TMP_Text[] resourceTexts = uiOverlay.GetComponentsInChildren<TMP_Text>();
-        foreach (TMP_Text text in resourceTexts)
-        {
-            if (text.name == "WoodCount")
-            {
-                wood = text;
-            }
-            else if (text.name == "StoneCount")
-            {
-                stone = text;
-            }
-            else if (text.name == "WaveNum")
-            {
-                wave = text;
-            }
-            else if (text.name == "Timer")
-            {
-                timer = text;
-                timeLeft = float.Parse(timer.text);
-            }
-        }
-
+        UpdateStoneUI();
+        UpdateWoodUI();
     }
 
     private void Update()
     {
-        timeLeft -= Time.deltaTime;
-        timer.text = timeLeft.ToString("0");
-
     }
 
     private void OnDisable()
@@ -115,17 +89,7 @@ public sealed class LevelManager : MonoBehaviour
         if (amount < 0) return;
         resourceWood += amount;
 
-        // Update UI
-
-    }
-
-    public void AddStone(int amount)
-    {
-        if (amount < 0) return;
-        resourceStone += amount;
-
-        // Update UI
-
+        UpdateWoodUI();
     }
 
     public void ConsumeWood(int amount)
@@ -137,59 +101,48 @@ public sealed class LevelManager : MonoBehaviour
         }
         resourceWood -= amount;
 
-        // Update UI
+        UpdateWoodUI();
     }
+
+    public void AddStone(int amount)
+    {
+        if (amount < 0) return;
+        resourceStone += amount;
+
+        UpdateStoneUI();
+    }    
 
     public void ConsumeStone(int amount)
     {
-        if (amount -resourceStone < 0)
+        if (amount - resourceStone < 0)
         {
             Debug.Log("Not enough stone.");
             return;
         }
         resourceStone -= amount;
 
-        // Update UI
+        UpdateStoneUI();
     }
-
     public void ConsumeResources(int wood, int stone)
     {
         ConsumeStone(stone);
         ConsumeWood(wood);
     }
 
-    public void AddResources(int amt, string resourceType)
-    {
-        switch (resourceType)
-        {
-            case "wood":
-                int temp = Int32.Parse(wood.text) + amt;
-                wood.text = (Int32.Parse(wood.text) + amt).ToString();
-                Debug.Log("temp: " + temp);
-                Debug.Log("text: " + wood.text);
-                break;
-            case "stone":
-                stone.text = (Int32.Parse(stone.text) + amt).ToString();
-                break;
-            default:
-                break;
-        }
-    }
-
-
+    // Get Player's stone count
     public int Stone => resourceStone;
+    
+    // Get Player's wood count
     public int Wood => resourceWood;
 
     IEnumerator DayNightRoutine()
     {
-        bool night = true;
-
         float timeElapsed = 0.0f;
         while(true)
         {
             if(timeElapsed >= delayBetweenCycle)
             {
-                if (night)
+                if (isNightTime)
                 {
                     nightBehavior.ToDay();
                     foreach(Cave cave in caves) cave.Spawn();
@@ -200,20 +153,30 @@ public sealed class LevelManager : MonoBehaviour
                     foreach (Cave cave in caves) cave.StopAllCoroutines();
                 }
 
-                night = !night;
+                isNightTime = !isNightTime;
                 timeElapsed = 0.0f;
-                waveNum += 1;
-                
-                // Update Wave Number & Time here
-
+                //waveNum += 1;
             }
 
+            waveImg.fillAmount = timeElapsed / delayBetweenCycle;
+
             timeElapsed += Time.deltaTime;
+
             yield return null;
         }
     }
 
-    int waveNum = 1;
+    void UpdateStoneUI()
+    {
+        stoneUI.text = resourceWood.ToString();
+    }
+
+    void UpdateWoodUI()
+    {
+        woodUI.text = resourceWood.ToString();
+    }
+
+    //int waveNum = 1;
 
     // Resources
     int resourceWood = 0, resourceStone = 0;
@@ -225,4 +188,10 @@ public sealed class LevelManager : MonoBehaviour
 
     public Action OnGameOver;
     public Action OnGameWon;
+
+    [SerializeField] TMP_Text woodUI;
+    [SerializeField] TMP_Text stoneUI;
+    [SerializeField] Image waveImg;
+
+    bool isNightTime = true;
 }
