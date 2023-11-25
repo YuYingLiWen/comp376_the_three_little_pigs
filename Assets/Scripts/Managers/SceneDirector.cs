@@ -32,7 +32,7 @@ public class SceneDirector : MonoBehaviour
 
     void Start()
     {
-        gameManager = GameManager.GetInstance();
+        gameManager = GameManager.Instance;
         if (!gameManager) Debug.LogError("Missing Game Manager", gameObject);
     }
 

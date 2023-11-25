@@ -7,12 +7,12 @@ public class UpgradeTower : MonoBehaviour
     [SerializeField] Button upgradeButton;
     [SerializeField] Button sellButton;
 
-    private ITower tower;
+    private Towers aTower;
 
     private void OnEnable()
     {
-        upgradeButton.onClick.AddListener(() => { tower.Upgrade();});
-        sellButton.onClick.AddListener(() => { tower.Sell();});
+        upgradeButton.onClick.AddListener(() => { aTower.Upgrade();});
+        sellButton.onClick.AddListener(() => { aTower.Sell();});
     }
 
     private void OnDisable()
@@ -20,8 +20,8 @@ public class UpgradeTower : MonoBehaviour
         upgradeButton.onClick.RemoveAllListeners();
         sellButton.onClick.RemoveAllListeners();
 
-        tower = null;
+        aTower = null;
     }
 
-    public void SetTower(ITower tower) => this.tower = tower;
+    public void SetTower(Towers tower) => this.aTower = tower;
 }

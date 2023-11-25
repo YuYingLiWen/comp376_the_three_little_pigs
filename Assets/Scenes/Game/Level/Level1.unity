@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.3069224, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -217,8 +217,8 @@ MonoBehaviour:
   uiOverlay: {fileID: 2074039295}
   debug: 1
   delayBetweenCycle: 10
-  woodUI: {fileID: 2093258286}
-  stoneUI: {fileID: 420034643}
+  woodCountUI: {fileID: 2093258286}
+  stoneCountUI: {fileID: 420034643}
   waveImg: {fileID: 1128494975}
 --- !u!4 &156483358
 Transform:
@@ -3128,6 +3128,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   night_fov: {fileID: 1023307982}
+  tier2sprite: {fileID: 0}
+  tier3sprite: {fileID: 0}
+  upgradeSFX: {fileID: 0}
+  onClickSFX: {fileID: 0}
 --- !u!1001 &2143376459
 PrefabInstance:
   m_ObjectHideFlags: 0

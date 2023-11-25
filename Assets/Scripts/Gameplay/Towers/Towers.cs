@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider), typeof(SpriteRenderer), typeof(AudioSource))]
-public abstract class Towers : MonoBehaviour, ITower, IInteractable
+public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
 {
     [SerializeField] private Vector3 exit;
     [SerializeField] Transform night_fov;
@@ -18,12 +18,11 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
 
     protected virtual void Awake()
     {
-        if (!levelManager) levelManager = FindFirstObjectByType<LevelManager>();
         if (!uiControl) uiControl = FindFirstObjectByType<OverlayUIController>();
 
-        coll = gameObject.GetComponent<SphereCollider>();
-        audioS = gameObject.GetComponent<AudioSource>();
-        rend = gameObject.GetComponent<SpriteRenderer>();
+        coll = GetComponent<SphereCollider>();
+        audioS = GetComponent<AudioSource>();
+        rend = GetComponent<SpriteRenderer>();
     }
 
     protected virtual void Start()
@@ -80,7 +79,6 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
 
     private void OnDisable()
     {
-        levelManager = null;
         uiControl = null;
     }
 
@@ -135,6 +133,8 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
 
     public virtual void Upgrade()
     {
+        Debug.Log($"{this.GetType()} is trying to upgrade to next tier.", this.gameObject);
+
         if (currentTier + 1 > so.MaxTier) return;
 
         currentTier += 1;
@@ -201,37 +201,4 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable
     private SpriteRenderer rend;
 
     [SerializeField] GameObject rangeIndicator;
-
-    private static LevelManager levelManager;
-}
-
-public interface ITower
-{
-    /// <summary>
-    /// To have man the tower.
-    /// </summary>
-    void Garrison(GameObject pig);
-    
-    /// <summary>
-    /// To have ALL units abandon tower.
-    /// </summary>
-    void Abandon();
-
-
-    /// <summary>
-    /// Upgrades tower to next tier.
-    /// </summary>
-    void Upgrade();
-
-    /// <summary>
-    /// Sell the tower.
-    /// </summary>
-    void Sell();
-}
-
-internal interface IInteractable
-{
-    void OnClick();
-
-    void Deselect();
 }

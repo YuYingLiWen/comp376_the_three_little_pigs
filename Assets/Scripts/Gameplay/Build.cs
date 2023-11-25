@@ -12,7 +12,7 @@ public class Build : MonoBehaviour
     LevelManager levelManager;
     private void Awake()
     {
-        if (!levelManager) levelManager = FindFirstObjectByType<LevelManager>();
+        if (!levelManager) levelManager = LevelManager.Instance;
     }
 
     public void Spawn_Tower_Blueprint()

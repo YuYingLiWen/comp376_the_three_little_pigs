@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,13 +15,17 @@ public sealed class LevelManager : MonoBehaviour
     [SerializeField] GameObject uiOverlay;
     Cave[] caves;
 
-    //Cache
+    private static LevelManager instance = null;
+    public static LevelManager Instance => instance;
 
     public bool debug = false;
 
     private void Awake()
     {
-        gameManager = GameManager.GetInstance();
+        if (!instance) instance = this;
+        else Destroy(gameObject);
+
+        gameManager = GameManager.Instance;
         if (!gameManager) Debug.LogError("Missing Game Manager", gameObject);
 
         if(!debug) inputSystem = gameManager.GetInputSystem();
@@ -50,11 +53,6 @@ public sealed class LevelManager : MonoBehaviour
         UpdateStoneUI();
         UpdateWoodUI();
     }
-
-    private void Update()
-    {
-    }
-
     private void OnDisable()
     {
         if (debug) return;
@@ -63,6 +61,8 @@ public sealed class LevelManager : MonoBehaviour
         OnGameWon -= gameManager.HandleGameWon;
 
         inputSystem.OnMouseLeftClick -= HandleMouseLeftClick;
+
+        instance = null;
     }
 
     private void GameOver()
@@ -155,7 +155,7 @@ public sealed class LevelManager : MonoBehaviour
 
                 isNightTime = !isNightTime;
                 timeElapsed = 0.0f;
-                //waveNum += 1;
+                waveNum += 1;
             }
 
             waveImg.fillAmount = timeElapsed / delayBetweenCycle;
@@ -168,15 +168,15 @@ public sealed class LevelManager : MonoBehaviour
 
     void UpdateStoneUI()
     {
-        stoneUI.text = resourceStone.ToString();
+        stoneCountUI.text = resourceStone.ToString();
     }
 
     void UpdateWoodUI()
     {
-        woodUI.text = resourceWood.ToString();
+        woodCountUI.text = resourceWood.ToString();
     }
 
-    //int waveNum = 1;
+    int waveNum = 1;
 
     // Resources
     int resourceWood = 0, resourceStone = 0;
@@ -189,8 +189,9 @@ public sealed class LevelManager : MonoBehaviour
     public Action OnGameOver;
     public Action OnGameWon;
 
-    [SerializeField] TMP_Text woodUI;
-    [SerializeField] TMP_Text stoneUI;
+    [SerializeField] TMP_Text woodCountUI;
+    [SerializeField] TMP_Text stoneCountUI;
+    [SerializeField] TMP_Text waveText;
     [SerializeField] Image waveImg;
 
     bool isNightTime = true;

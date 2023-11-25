@@ -1,13 +1,21 @@
 
 using UnityEngine;
 
-public class TownCenter : MonoBehaviour, IInteractable
+public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDamageable
 {
     [SerializeField] Transform night_fov;
+
+    private void Awake()
+    {
+        audioS = GetComponent<AudioSource>();
+        sRend = GetComponent<SpriteRenderer>();
+    }
 
     private void Start()
     {
         night_fov.localScale = Vector3.one * fovRange;
+
+        health = new Health(100);
     }
 
     void Update()
@@ -18,12 +26,70 @@ public class TownCenter : MonoBehaviour, IInteractable
     public void OnClick()
     {
         Debug.Log("Clicked " + name);
+        //audioS.PlayOneShot(onClickSFX);
+
     }
 
     public void Deselect()
     {
         Debug.Log("Deseelect " + name);
+
+
     }
 
+    public void Upgrade()
+    {
+        if (currentTier + 1 > maxTier) return;
+
+        currentTier += 1;
+
+        Debug.Log("Town Center Upgraded to tier : " + currentTier);
+        
+        //audioS.PlayOneShot(upgradeSFX);
+    }
+
+    void ChangeSprite()
+    {
+        if(currentTier == 2)
+        {
+            sRend.sprite = tier2sprite;
+        }
+        else if (currentTier == 3)
+        {
+            sRend.sprite = tier3sprite;
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health.TakeDamage(damage);
+    }
+
+    public bool IsDead()
+    {
+        return !health.IsAlive();
+    }
+
+    public GameObject ThisObject()
+    {
+        return gameObject;
+    }
+
+
+    SpriteRenderer sRend;
+    [SerializeField] Sprite tier2sprite;
+    [SerializeField] Sprite tier3sprite;
+
+
+    AudioSource audioS;
+    [SerializeField] AudioClip upgradeSFX;
+    [SerializeField] AudioClip onClickSFX;
+
+
+    Health health;
+
     float fovRange = 3.0f;
+
+    int currentTier = 0;
+    readonly int maxTier = 3;
 }

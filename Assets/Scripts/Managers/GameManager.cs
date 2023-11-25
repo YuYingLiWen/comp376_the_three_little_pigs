@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 {
     // Note: Script MUST be attached to DDOL
     private static GameManager instance = null;
-    public static GameManager GetInstance() => instance;
+    public static GameManager Instance => instance;
 
     /// The following are serizlized for debugging purposes
     [SerializeField] private SceneDirector sceneDirector = null;
@@ -46,10 +46,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        inputSystem = gameObject.GetComponentInChildren<InputSystem>();
+        inputSystem = GetComponentInChildren<InputSystem>();
         if (!inputSystem) Debug.LogError("Missing Input System", gameObject);
 
-        audioManager = gameObject.GetComponentInChildren<AudioManager>();
+        audioManager = GetComponentInChildren<AudioManager>();
         if (!audioManager) Debug.LogError("Missing Audio Manager", gameObject);
     }
 

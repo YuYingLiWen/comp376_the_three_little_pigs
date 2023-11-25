@@ -19,7 +19,7 @@ public class InputSystem : MonoBehaviour
 
     private void Start()
     {
-        gameManager = GameManager.GetInstance();
+        gameManager = GameManager.Instance;
         if (!gameManager) Debug.LogError("Missing GameManager.", gameObject);
     }
 

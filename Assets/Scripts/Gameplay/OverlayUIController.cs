@@ -30,6 +30,6 @@ public class OverlayUIController : MonoBehaviour
     {
         DisplayUpgradeTowerMenu(active);
 
-        towerUpgradeScript.SetTower(selectedTower.GetComponent<ITower>());
+        towerUpgradeScript.SetTower(selectedTower.GetComponent<Towers>());
     }
 }
