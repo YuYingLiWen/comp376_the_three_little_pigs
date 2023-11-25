@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-public class YuTC : MonoBehaviour, IInteractable
+public class TownCenter : MonoBehaviour, IInteractable
 {
     [SerializeField] Transform night_fov;
 
