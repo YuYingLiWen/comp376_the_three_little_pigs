@@ -7,7 +7,15 @@ using UnityEngine.UI;
 
 /// <summary>
 /// Goal: Checks win & lose conditions.
+/// 
+/// Objectives: 
+/// 1) Construct a tier3 Town Center
+/// 2) Defend for 3 waves against massive wave of enemies.
+/// 
+/// 
 /// </summary>
+
+
 
 public sealed class LevelManager : MonoBehaviour
 {
@@ -44,14 +52,8 @@ public sealed class LevelManager : MonoBehaviour
 
         inputSystem.OnMouseLeftClick += HandleMouseLeftClick;
         inputSystem.OnMapScroll += HandleMapScroll;
-    }
 
-    private void Start()
-    {
-        StartCoroutine(DayNightRoutine());
-
-        UpdateStoneUI();
-        UpdateWoodUI();
+        OnConstructedTier3TC += HandleOnConstructedTier3TC;
     }
     private void OnDisable()
     {
@@ -61,18 +63,19 @@ public sealed class LevelManager : MonoBehaviour
         OnGameWon -= gameManager.HandleGameWon;
 
         inputSystem.OnMouseLeftClick -= HandleMouseLeftClick;
+        inputSystem.OnMapScroll -= HandleMapScroll;
+
+        OnConstructedTier3TC -= HandleOnConstructedTier3TC;
 
         instance = null;
     }
 
-    private void GameOver()
+    private void Start()
     {
-        OnGameOver?.Invoke();
-    }
+        StartCoroutine(DayNightRoutine());
 
-    private void GameWon()
-    {
-        OnGameWon?.Invoke();
+        UpdateStoneUI();
+        UpdateWoodUI();
     }
 
     private void HandleMapScroll(Vector2 axis)
@@ -155,7 +158,8 @@ public sealed class LevelManager : MonoBehaviour
 
                 isNightTime = !isNightTime;
                 timeElapsed = 0.0f;
-                waveNum += 1;
+
+                if (atFinalObjective) currentWave += 1;
             }
 
             waveImg.fillAmount = timeElapsed / delayBetweenCycle;
@@ -176,7 +180,15 @@ public sealed class LevelManager : MonoBehaviour
         woodCountUI.text = resourceWood.ToString();
     }
 
-    int waveNum = 1;
+    void HandleOnConstructedTier3TC()
+    {
+        atFinalObjective = true;
+    }
+
+
+    bool atFinalObjective = false;
+    readonly int wavesToSurive = 3;
+    int currentWave = 0;
 
     // Resources
     int resourceWood = 0, resourceStone = 0;
@@ -188,6 +200,8 @@ public sealed class LevelManager : MonoBehaviour
 
     public Action OnGameOver;
     public Action OnGameWon;
+    public Action OnConstructedTier3TC;
+
 
     [SerializeField] TMP_Text woodCountUI;
     [SerializeField] TMP_Text stoneCountUI;

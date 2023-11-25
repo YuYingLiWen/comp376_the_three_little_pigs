@@ -15,7 +15,7 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
     {
         night_fov.localScale = Vector3.one * fovRange;
 
-        health = new Health(100);
+        health = new Health(10);
     }
 
     void Update()
@@ -44,8 +44,10 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
         currentTier += 1;
 
         Debug.Log("Town Center Upgraded to tier : " + currentTier);
-        
+
         //audioS.PlayOneShot(upgradeSFX);
+
+        ChangeSprite();
     }
 
     void ChangeSprite()
@@ -57,12 +59,21 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
         else if (currentTier == 3)
         {
             sRend.sprite = tier3sprite;
+            LevelManager.Instance.OnConstructedTier3TC?.Invoke();
         }
     }
 
     public void TakeDamage(int damage)
     {
+        Debug.Log($"TC took {damage}.");
+
         health.TakeDamage(damage);
+
+        if(IsDead())
+        {
+            Debug.Log("Game Lost TC Destroyed.");
+            LevelManager.Instance.OnGameOver?.Invoke();
+        }
     }
 
     public bool IsDead()
