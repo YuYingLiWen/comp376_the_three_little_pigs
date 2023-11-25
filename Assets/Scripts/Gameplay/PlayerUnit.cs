@@ -9,19 +9,17 @@ public class PlayerUnit : MonoBehaviour, IInteractable
     bool carryingWood = false;
     Vector3 housePos = Vector3.zero;
     GameObject house;
-    private LevelManager levelManager;
     private Color originalColor;
 
     [SerializeField] Transform night_fov;
 
     private void Awake()
     {
-        levelManager = FindFirstObjectByType<LevelManager>();
+        
     }
 
     private void OnEnable()
     {
-        if (!uiControl) uiControl = FindFirstObjectByType<OverlayUIController>();
     }
 
     void Start()
@@ -70,7 +68,7 @@ public class PlayerUnit : MonoBehaviour, IInteractable
                 Debug.Log("Wood depositied! Update ressources here (like +10 wood)");
 
                 // update ressources 
-                levelManager.AddWood(10);
+                LevelManager.Instance.AddWood(10);
             }
         }
     }
@@ -109,8 +107,7 @@ public class PlayerUnit : MonoBehaviour, IInteractable
             originalColor = renderer.material.color;
         }
 
-        uiControl.DisplayBuildMenu(true);
-        uiControl.DisplayUpgradeTowerMenu(false);
+        OverlayUIController.Instance.DisplayBuildMenu(true);
 
         // Change the object's color to indicate selection
         ChangeObjectColor(Color.red);
@@ -124,7 +121,7 @@ public class PlayerUnit : MonoBehaviour, IInteractable
         {
             renderer.material.color = originalColor;
         }
-        uiControl.DisplayBuildMenu(false);
+        OverlayUIController.Instance.DisplayBuildMenu(false);
 
 
         Debug.Log("Deselect " + name);
@@ -139,8 +136,4 @@ public class PlayerUnit : MonoBehaviour, IInteractable
             renderer.material.color = color;
         }
     }
-
-    private static OverlayUIController uiControl;
-
-
 }

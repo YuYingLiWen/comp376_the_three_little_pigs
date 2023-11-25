@@ -27,14 +27,13 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
     {
         Debug.Log("Clicked " + name);
         //audioS.PlayOneShot(onClickSFX);
-
+        OverlayUIController.Instance.DisplayTC_Menu(true);
     }
 
     public void Deselect()
     {
         Debug.Log("Deseelect " + name);
-
-
+        OverlayUIController.Instance.DisplayTC_Menu(false);
     }
 
     public void Upgrade()

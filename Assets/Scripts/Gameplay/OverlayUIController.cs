@@ -1,29 +1,62 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class OverlayUIController : MonoBehaviour
 {
-    [SerializeField] GameObject playerBuildMenu;
-    [SerializeField] GameObject upgradeTowerUI;
+    [SerializeField] List<GameObject> menus;
+
     UpgradeTower towerUpgradeScript;
 
-    private void OnEnable()
+    private void Awake()
     {
-        playerBuildMenu.SetActive(false);
-        upgradeTowerUI.SetActive(false);
+        if (!instance) instance = this;
+        else Destroy(gameObject);
+    }
+
+    private void OnDisable()
+    {
+        instance = null;
     }
 
     public void DisplayBuildMenu(bool active)
     {
-        playerBuildMenu.SetActive(active);
+        if (active) EnableMenu(Menus.BuildMenu);
+        else DisableAllMenus();
     }
 
     public void DisplayUpgradeTowerMenu(bool active)
     {
-        upgradeTowerUI.SetActive(active);
+        if(active)
+        {
+            EnableMenu(Menus.TowerUpgradeMenu);
 
-        if (!active) return;
+            if (!towerUpgradeScript)
+            {
+                var m = menus.Find(menu => (menu.name == Menus.TowerUpgradeMenu.ToString()));
+                towerUpgradeScript = m.GetComponent<UpgradeTower>();
+            }
+        }
+        else
+        {
+            DisableAllMenus();
+        }
+    }
 
-        if (!towerUpgradeScript) towerUpgradeScript = upgradeTowerUI.GetComponent<UpgradeTower>();
+    public void DisplayTC_Menu(bool active)
+    {
+        if (active) EnableMenu(Menus.UpgradeTCMenu);
+        else DisableAllMenus();
+    }
+
+    void EnableMenu(Menus menu)
+    {
+        foreach (GameObject m in menus)
+        {
+            if(m.name == menu.ToString()) m.SetActive(true);
+            else m.SetActive(false);
+        }
     }
 
     public void DisplayUpgradeTowerMenu(bool active, GameObject selectedTower)
@@ -32,4 +65,37 @@ public class OverlayUIController : MonoBehaviour
 
         towerUpgradeScript.SetTower(selectedTower.GetComponent<Towers>());
     }
+
+    public void DisableAllMenus()
+    {
+        menus.ForEach(menu => menu.SetActive(false)); 
+    }
+
+    public void HandleStoneUpdate(int count)
+    {
+        stoneCountUI.text = count.ToString();
+    }
+
+    public void HandleWoodUpdate(int count)
+    {
+        woodCountUI.text = count.ToString();
+    }
+
+    public void HandleNightCycleUpdate(float fill)
+    {
+        waveImg.fillAmount = fill;
+    }
+
+
+    [SerializeField] TMP_Text woodCountUI;
+    [SerializeField] TMP_Text stoneCountUI;
+    [SerializeField] TMP_Text waveText;
+    [SerializeField] Image waveImg;
+
+
+    private static OverlayUIController instance = null;
+    public static OverlayUIController Instance => instance;
+
+    enum Menus { TowerUpgradeMenu, UpgradeTCMenu, BuildMenu };
 }
+

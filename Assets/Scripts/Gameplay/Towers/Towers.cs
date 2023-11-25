@@ -18,8 +18,6 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
 
     protected virtual void Awake()
     {
-        if (!uiControl) uiControl = FindFirstObjectByType<OverlayUIController>();
-
         coll = GetComponent<SphereCollider>();
         audioS = GetComponent<AudioSource>();
         rend = GetComponent<SpriteRenderer>();
@@ -79,7 +77,6 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
 
     private void OnDisable()
     {
-        uiControl = null;
     }
 
     // Pick a target. Default pick the closest.
@@ -165,8 +162,7 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
         //audioS.PlayOneShot(so.OnClickSFX);
 
         rangeIndicator.SetActive(true);
-        uiControl.DisplayUpgradeTowerMenu(true, this.gameObject);
-        uiControl.DisplayBuildMenu(false);
+        OverlayUIController.Instance.DisplayUpgradeTowerMenu(true, this.gameObject);
 
         Debug.Log("Clicked " + name);
     }
@@ -174,7 +170,7 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
     public void Deselect()
     {
         rangeIndicator.SetActive(false);
-        uiControl.DisplayUpgradeTowerMenu(false);
+        OverlayUIController.Instance.DisplayUpgradeTowerMenu(false);
 
         Debug.Log("Deseelect " + name);
 
@@ -187,8 +183,6 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
         Destroy(gameObject);
     }
 
-
-    private static OverlayUIController uiControl;
 
     //Cache
     Vector3 position;

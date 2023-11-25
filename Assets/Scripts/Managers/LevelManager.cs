@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-
 
 /// <summary>
 /// Goal: Checks win & lose conditions.
@@ -15,18 +12,17 @@ using UnityEngine.UI;
 /// 
 /// </summary>
 
-
-
 public sealed class LevelManager : MonoBehaviour
 {
     [SerializeField] NightBehavior nightBehavior;
-    [SerializeField] GameObject uiOverlay;
     Cave[] caves;
 
     private static LevelManager instance = null;
     public static LevelManager Instance => instance;
 
     public bool debug = false;
+
+    OverlayUIController uiController;
 
     private void Awake()
     {
@@ -40,11 +36,17 @@ public sealed class LevelManager : MonoBehaviour
 
         caves = FindObjectsByType<Cave>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
 
-        Debug.Log(caves.Length);
+        Debug.Log("Cave count: " + caves.Length);
+        if(!uiController) uiController = FindFirstObjectByType<OverlayUIController>();
     }
 
     private void OnEnable()
     {
+        OnStoneUpdate += uiController.HandleStoneUpdate;
+        OnWoodUpdate += uiController.HandleWoodUpdate;
+        OnNightCycleUpdate += uiController.HandleNightCycleUpdate;
+        OnConstructedTier3TC += HandleOnConstructedTier3TC;
+
         if (debug) return;
 
         OnGameOver += gameManager.HandleGameOver;
@@ -52,11 +54,15 @@ public sealed class LevelManager : MonoBehaviour
 
         inputSystem.OnMouseLeftClick += HandleMouseLeftClick;
         inputSystem.OnMapScroll += HandleMapScroll;
-
-        OnConstructedTier3TC += HandleOnConstructedTier3TC;
     }
+
     private void OnDisable()
     {
+        OnStoneUpdate -= uiController.HandleStoneUpdate;
+        OnWoodUpdate -= uiController.HandleWoodUpdate;
+        OnNightCycleUpdate -= uiController.HandleNightCycleUpdate;
+        OnConstructedTier3TC -= HandleOnConstructedTier3TC;
+
         if (debug) return;
 
         OnGameOver -= gameManager.HandleGameOver;
@@ -65,7 +71,6 @@ public sealed class LevelManager : MonoBehaviour
         inputSystem.OnMouseLeftClick -= HandleMouseLeftClick;
         inputSystem.OnMapScroll -= HandleMapScroll;
 
-        OnConstructedTier3TC -= HandleOnConstructedTier3TC;
 
         instance = null;
     }
@@ -74,8 +79,8 @@ public sealed class LevelManager : MonoBehaviour
     {
         StartCoroutine(DayNightRoutine());
 
-        UpdateStoneUI();
-        UpdateWoodUI();
+        OnWoodUpdate?.Invoke(resourceWood);
+        OnStoneUpdate?.Invoke(resourceStone);
     }
 
     private void HandleMapScroll(Vector2 axis)
@@ -92,7 +97,7 @@ public sealed class LevelManager : MonoBehaviour
         if (amount < 0) return;
         resourceWood += amount;
 
-        UpdateWoodUI();
+        OnWoodUpdate?.Invoke(resourceWood);
     }
 
     public void ConsumeWood(int amount)
@@ -104,7 +109,7 @@ public sealed class LevelManager : MonoBehaviour
         }
         resourceWood -= amount;
 
-        UpdateWoodUI();
+        OnWoodUpdate?.Invoke(resourceWood);
     }
 
     public void AddStone(int amount)
@@ -112,8 +117,8 @@ public sealed class LevelManager : MonoBehaviour
         if (amount < 0) return;
         resourceStone += amount;
 
-        UpdateStoneUI();
-    }    
+        OnStoneUpdate?.Invoke(resourceStone);
+    }
 
     public void ConsumeStone(int amount)
     {
@@ -124,8 +129,9 @@ public sealed class LevelManager : MonoBehaviour
         }
         resourceStone -= amount;
 
-        UpdateStoneUI();
+        OnStoneUpdate?.Invoke(resourceStone);
     }
+
     public void ConsumeResources(int wood, int stone)
     {
         ConsumeStone(stone);
@@ -162,22 +168,12 @@ public sealed class LevelManager : MonoBehaviour
                 if (atFinalObjective) currentWave += 1;
             }
 
-            waveImg.fillAmount = timeElapsed / delayBetweenCycle;
+            OnNightCycleUpdate?.Invoke(timeElapsed / delayBetweenCycle);
 
             timeElapsed += Time.deltaTime;
 
             yield return null;
         }
-    }
-
-    void UpdateStoneUI()
-    {
-        stoneCountUI.text = resourceStone.ToString();
-    }
-
-    void UpdateWoodUI()
-    {
-        woodCountUI.text = resourceWood.ToString();
     }
 
     void HandleOnConstructedTier3TC()
@@ -202,11 +198,8 @@ public sealed class LevelManager : MonoBehaviour
     public Action OnGameWon;
     public Action OnConstructedTier3TC;
 
-
-    [SerializeField] TMP_Text woodCountUI;
-    [SerializeField] TMP_Text stoneCountUI;
-    [SerializeField] TMP_Text waveText;
-    [SerializeField] Image waveImg;
+    public Action<int> OnWoodUpdate, OnStoneUpdate;
+    public Action<float> OnNightCycleUpdate;
 
     bool isNightTime = true;
 }
