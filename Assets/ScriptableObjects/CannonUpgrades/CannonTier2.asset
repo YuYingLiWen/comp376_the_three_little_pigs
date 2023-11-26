@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efdcece2215a0ff4e9859a49769d0380, type: 3}
   m_Name: CannonTier2
   m_EditorClassIdentifier: 
+  woodCost: 0
+  stoneCost: 0
   attack: 9
   range: 4
   delayPerShot: 3.5
-  maxTier: 2
+  maxTier: 3
   tower: {fileID: 0}
   onClickSFX: {fileID: 0}
   onShootSFX: {fileID: 0}

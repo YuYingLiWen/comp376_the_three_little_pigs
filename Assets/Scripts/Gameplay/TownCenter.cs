@@ -44,16 +44,41 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
     {
         if (currentTier + 1 > maxTier) return;
 
+        if (!LevelManager.Instance.HasWood(woodCost)) return;
+
+        LevelManager.Instance.ConsumeWood(woodCost);
         currentTier += 1;
+
+        OnUpgraded();
+
 
         Debug.Log("Town Center Upgraded to tier : " + currentTier);
 
         if(currentTier >= maxTier)
             OverlayUIController.Instance.DisplayTC_Menu(false);
+    }
 
-        //audioS.PlayOneShot(upgradeSFX);
-
+    void OnUpgraded()
+    {
         ChangeSprite();
+        //audioS.PlayOneShot(upgradeSFX);
+        // Play VFX?
+
+        IncreaseCosts();
+    }
+
+    void IncreaseCosts()
+    {
+        woodCost = (int)((double)woodCost * 1.5f);
+        stoneCost = (int)((double)stoneCost * 1.5f);
+
+        UpdateUI();
+    }
+
+    void UpdateUI()
+    {
+        OverlayUIController.Instance.DisplayTC_Menu(false);
+        OverlayUIController.Instance.DisplayTC_Menu(true);
     }
 
     void ChangeSprite()
@@ -97,6 +122,9 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
         TakeDamage(9999);
     }
 
+    public int UpgradeCostStone => stoneCost;
+    public int UpgradeCostWood => woodCost;
+
     SpriteRenderer sRend;
     [SerializeField] Sprite tierTwoSprite;
     [SerializeField] Sprite tierThreeSprite;
@@ -113,4 +141,7 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
 
     int currentTier = 1;
     readonly int maxTier = 3;
+
+    int woodCost = 10;
+    int stoneCost = 100;
 }

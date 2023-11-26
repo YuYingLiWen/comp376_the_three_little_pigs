@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: efdcece2215a0ff4e9859a49769d0380, type: 3}
-  m_Name: CannonTier1
+  m_Name: ArrowTier3
   m_EditorClassIdentifier: 
-  woodCost: 0
+  woodCost: 30
   stoneCost: 0
-  attack: 7
-  range: 3
-  delayPerShot: 5
+  attack: 2
+  range: 14
+  delayPerShot: 1
   maxTier: 3
-  tower: {fileID: 0}
+  tower: {fileID: -7011020414044352858, guid: f64b1d3f025af934d9426fde28d4787a, type: 3}
   onClickSFX: {fileID: 0}
   onShootSFX: {fileID: 0}

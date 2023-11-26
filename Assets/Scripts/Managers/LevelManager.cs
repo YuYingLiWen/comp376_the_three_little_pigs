@@ -144,6 +144,28 @@ public sealed class LevelManager : MonoBehaviour
     // Get Player's wood count
     public int Wood => resourceWood;
 
+    //Checks if has enough resources
+    public bool HasWood(int cost)
+    {
+        if (cost <= Stone) Debug.Log("Has engouh wood.");
+        else Debug.Log("Not Enough wood");
+
+        return cost <= Wood;
+    }
+
+    //Checks if has enough resources
+    public bool HasStones(int cost)
+    {
+        if (cost <= Stone) Debug.Log("Has engouh stone.");
+        else Debug.Log("Not Enough stones");
+
+        return cost <= Stone;
+
+    }
+
+
+    public bool HasResources(int woodCost, int stoneCost) => HasWood(woodCost) && HasStones(stoneCost);
+
     IEnumerator DayNightRoutine()
     {
         float timeElapsed = 0.0f;
@@ -218,6 +240,7 @@ public sealed class LevelManager : MonoBehaviour
     {
         atFinalObjective = true;
     }
+
 
 
     bool atFinalObjective = false;

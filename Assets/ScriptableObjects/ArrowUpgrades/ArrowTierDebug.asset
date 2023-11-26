@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efdcece2215a0ff4e9859a49769d0380, type: 3}
   m_Name: ArrowTierDebug
   m_EditorClassIdentifier: 
+  woodCost: 0
+  stoneCost: 0
   attack: 999
   range: 999
   delayPerShot: 0.5
   maxTier: 2
-  tower: {fileID: 0}
+  tower: {fileID: 21300000, guid: 6fe6a80b2ab1eb6408b9089dfedf472d, type: 3}
   onClickSFX: {fileID: 0}
   onShootSFX: {fileID: 0}

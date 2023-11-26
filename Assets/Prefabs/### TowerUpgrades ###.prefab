@@ -44,9 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da90e91762839c84d86bb9bf639c9336, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arrowTowerTier1SO: {fileID: 11400000, guid: 977d770781a836246b210cef447f02a1, type: 2}
+  arrowTowerTier3SO: {fileID: 11400000, guid: 6f238d4ab397a554dbfb05de8a89746e, type: 2}
   arrowTowerTier2SO: {fileID: 11400000, guid: b11d13454a0a1ef4c919f6c127c4a4da, type: 2}
   arrowTowerTierDebugSO: {fileID: 11400000, guid: 90f11be0a2b962045a23f3614c52cc54, type: 2}
-  cannonTier1SO: {fileID: 11400000, guid: b4db5b786d4c9994ca37406aa5e5704e, type: 2}
+  cannonTier3SO: {fileID: 0}
   cannonTier2SO: {fileID: 11400000, guid: 91cde746b82001a4da600e34c05a96f8, type: 2}
   cannonTierDebugSO: {fileID: 11400000, guid: 3b04f9bcd8048014490666446f9dc6fd, type: 2}

@@ -16,19 +16,24 @@ public sealed class CannonTower : Towers
 
     public override void Upgrade()
     {
+        if (currentTier + 1 > so.MaxTier) return;
+        if (!LevelManager.Instance.HasResources(UpgradeCostWood, UpgradeCostStone)) return;
+
         base.Upgrade();
 
         switch (currentTier)
         {
-            case 1:
-                this.so = TowersUpgrades.GetInstance().GetCannonTier1SO;
-                break;
             case 2:
                 this.so = TowersUpgrades.GetInstance().GetArrowTier2SO;
+                break;
+            case 3:
+                this.so = TowersUpgrades.GetInstance().GetCannonTier3SO;
                 break;
             default:
                 this.so = TowersUpgrades.GetInstance().GetArrowTierDebugSO;
                 break;
         }
+
+        base.OnUpgraded();
     }
 }

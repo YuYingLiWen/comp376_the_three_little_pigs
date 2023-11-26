@@ -12,19 +12,24 @@ public class TowersUpgrades : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    [SerializeField]private TowerScriptableObject arrowTowerTier1SO;
+    /// <summary>
+    /// Note that tier 1 is assigned by default to the tower object.
+    /// </summary>
+
+
+    [SerializeField]private TowerScriptableObject arrowTowerTier3SO;
     [SerializeField]private TowerScriptableObject arrowTowerTier2SO;
     [SerializeField]private TowerScriptableObject arrowTowerTierDebugSO;
     
-    [SerializeField]private TowerScriptableObject cannonTier1SO;
+    [SerializeField]private TowerScriptableObject cannonTier3SO;
     [SerializeField]private TowerScriptableObject cannonTier2SO;
     [SerializeField]private TowerScriptableObject cannonTierDebugSO;
 
-    public TowerScriptableObject GetArrowTier1SO => arrowTowerTier1SO;
+    public TowerScriptableObject GetArrowTier3SO     => arrowTowerTier3SO;
     public TowerScriptableObject GetArrowTier2SO     => arrowTowerTier2SO;
     public TowerScriptableObject GetArrowTierDebugSO => arrowTowerTierDebugSO;
 
-    public TowerScriptableObject GetCannonTier1SO => cannonTier1SO;
+    public TowerScriptableObject GetCannonTier3SO     => cannonTier3SO;
     public TowerScriptableObject GetCannonTier2SO     => cannonTier2SO;
     public TowerScriptableObject GetCannonTierDebugSO => cannonTierDebugSO;
 }

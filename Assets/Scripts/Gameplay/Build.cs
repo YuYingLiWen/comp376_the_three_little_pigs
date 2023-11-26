@@ -29,15 +29,16 @@ public class Build : MonoBehaviour
         Debug.Log("Buy Tower: " + tower_blueprint_prefab.name);
         Debug.Log($"Current Wood: {levelManager.Wood} | Stone: {levelManager.Stone}");
 
-        if (woodCost > levelManager.Wood || stoneCost > levelManager.Stone)
+        if (levelManager.HasResources(woodCost,stoneCost))
+        {
+            levelManager.ConsumeResources(woodCost, stoneCost);
+            Debug.Log($"After Wood: {levelManager.Wood} | Stone: {levelManager.Stone}");
+            return true;
+        }
+        else
         {
             Debug.Log($"Not enough resources: {(woodCost > levelManager.Wood ? "Wood" : "Stone")}");
             return false;
         }
-        Debug.Log($"After Wood: {levelManager.Wood} | Stone: {levelManager.Stone}");
-
-        levelManager.ConsumeResources(woodCost, stoneCost);
-
-        return true;
     }
 }

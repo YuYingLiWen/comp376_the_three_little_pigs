@@ -1,3 +1,4 @@
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,9 +10,9 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
     private List<GameObject> garrisonedUnits = new();
     protected List<GameObject> enemiesInRange = new();
 
-    protected int currentTier = 0; // Used for upgrade
+    protected int currentTier = 1; // Used for upgrade
 
-    protected TowerScriptableObject so;
+    [SerializeField] protected TowerScriptableObject so; // Default assign tier 1.
 
     // Returns the upgrade level/tier of the tower.
     public int GetCurrentTier() => currentTier;
@@ -25,8 +26,6 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
 
     protected virtual void Start()
     {
-        so = TowersUpgrades.GetInstance().GetArrowTier1SO;
-        
         // Set ranges
         coll.radius = so.Range;
         rangeIndicator.transform.localScale = Vector3.one * so.Range;
@@ -36,7 +35,6 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
     protected virtual void Update()
     {
         night_fov.position = Camera.main.WorldToScreenPoint(transform.position);
-
 
         if (enemiesInRange.Count <= 0 && target == null) return;
 
@@ -132,15 +130,16 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
     {
         Debug.Log($"{this.GetType()} is trying to upgrade to next tier.", this.gameObject);
 
-        if (currentTier + 1 > so.MaxTier) return;
-
+        LevelManager.Instance.ConsumeResources(UpgradeCostWood, UpgradeCostStone);
         currentTier += 1;
 
-        if(currentTier > so.MaxTier)
+        if (currentTier >= so.MaxTier)
             OverlayUIController.Instance.DisplayUpgradeTowerMenu(false);
 
         Debug.Log($"{this.GetType()} is now tier {currentTier}.", this.gameObject);
     }
+
+
 
     // The tower fires its weapon
     protected virtual void Fire()
@@ -156,9 +155,11 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
         //audioS.PlayOneShot(so.OnShootSFX);
     }
 
-    protected virtual void OnTierChange()
+    protected virtual void OnUpgraded()
     {
         rend.sprite = so.TowerSprite;
+        // Play SFX
+        // Play VFX?
     }
 
     public void OnClick()
@@ -192,6 +193,8 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
         Destroy(gameObject);
     }
 
+    public int UpgradeCostStone => so.StoneCost;
+    public int UpgradeCostWood => so.WoodCost;
 
     //Cache
     Vector3 position;

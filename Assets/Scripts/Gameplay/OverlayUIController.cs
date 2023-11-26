@@ -62,7 +62,7 @@ public class OverlayUIController : MonoBehaviour
     public void DisplayUpgradeTowerMenu(bool active, GameObject selectedTower)
     {
         DisplayUpgradeTowerMenu(active);
-
+        Debug.Log(selectedTower.GetComponent<Towers>());
         towerUpgradeScript.SetTower(selectedTower.GetComponent<Towers>());
     }
 

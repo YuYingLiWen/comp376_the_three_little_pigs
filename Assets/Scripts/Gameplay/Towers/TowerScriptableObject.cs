@@ -3,8 +3,9 @@
 [CreateAssetMenu(fileName = "Tower", menuName = "ScriptableObjects/Tower")]
 public class TowerScriptableObject : ScriptableObject
 {
-    [SerializeField] protected int woodCost;
-    [SerializeField] protected int stoneCost;
+
+    [SerializeField, Tooltip("Cost to get to next tier.")] protected int woodCost;
+    [SerializeField, Tooltip("Cost to get to next tier.")] protected int stoneCost;
 
     [SerializeField] protected int attack;
     [SerializeField] protected float range;
@@ -22,6 +23,9 @@ public class TowerScriptableObject : ScriptableObject
     public AudioClip OnClickSFX => onClickSFX;
     public AudioClip OnShootSFX => onShootSFX;
 
+    // Cost to get to next tier.
     public int WoodCost => woodCost;
+
+    // Cost to get to next tier.
     public int StoneCost => stoneCost;
 }
