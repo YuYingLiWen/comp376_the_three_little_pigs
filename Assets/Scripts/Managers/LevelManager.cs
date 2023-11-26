@@ -102,7 +102,7 @@ public sealed class LevelManager : MonoBehaviour
 
     public void ConsumeWood(int amount)
     {
-        if (amount - resourceWood < 0)
+        if (resourceWood - amount < 0)
         {
             Debug.Log("Not enough woods.");
             return;
@@ -122,7 +122,7 @@ public sealed class LevelManager : MonoBehaviour
 
     public void ConsumeStone(int amount)
     {
-        if (amount - resourceStone < 0)
+        if (resourceStone - amount < 0)
         {
             Debug.Log("Not enough stone.");
             return;
@@ -147,7 +147,7 @@ public sealed class LevelManager : MonoBehaviour
     //Checks if has enough resources
     public bool HasWood(int cost)
     {
-        if (cost <= Stone) Debug.Log("Has engouh wood.");
+        if (cost <= Wood) Debug.Log("Has engouh wood.");
         else Debug.Log("Not Enough wood");
 
         return cost <= Wood;
