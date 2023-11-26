@@ -135,6 +135,11 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
         if (currentTier + 1 > so.MaxTier) return;
 
         currentTier += 1;
+
+        if(currentTier > so.MaxTier)
+            OverlayUIController.Instance.DisplayUpgradeTowerMenu(false);
+
+        Debug.Log($"{this.GetType()} is now tier {currentTier}.", this.gameObject);
     }
 
     // The tower fires its weapon
@@ -162,7 +167,9 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
         //audioS.PlayOneShot(so.OnClickSFX);
 
         rangeIndicator.SetActive(true);
-        OverlayUIController.Instance.DisplayUpgradeTowerMenu(true, this.gameObject);
+
+        if (currentTier < so.MaxTier)
+            OverlayUIController.Instance.DisplayUpgradeTowerMenu(true, this.gameObject);
 
         Debug.Log("Clicked " + name);
     }
@@ -170,7 +177,9 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
     public void Deselect()
     {
         rangeIndicator.SetActive(false);
-        OverlayUIController.Instance.DisplayUpgradeTowerMenu(false);
+
+        if (currentTier < so.MaxTier)
+            OverlayUIController.Instance.DisplayUpgradeTowerMenu(false);
 
         Debug.Log("Deseelect " + name);
 

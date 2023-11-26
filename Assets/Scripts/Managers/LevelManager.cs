@@ -154,18 +154,23 @@ public sealed class LevelManager : MonoBehaviour
                 if (isNightTime)
                 {
                     nightBehavior.ToDay();
-                    foreach(Cave cave in caves) cave.Spawn();
+                    SpawnEnemies();
                 }
                 else
                 {
                     nightBehavior.ToNight();
-                    foreach (Cave cave in caves) cave.StopAllCoroutines();
+                    StopSpawningEnemies();
                 }
 
                 isNightTime = !isNightTime;
                 timeElapsed = 0.0f;
 
-                if (atFinalObjective) currentWave += 1;
+                if (atFinalObjective)
+                {
+                    currentWave += 1;
+
+                    CheckWinCondition();
+                }
             }
 
             OnNightCycleUpdate?.Invoke(timeElapsed / delayBetweenCycle);
@@ -174,6 +179,39 @@ public sealed class LevelManager : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    private void CheckWinCondition()
+    {
+        if(currentWave >= wavesToSurive)
+        {
+            Debug.Log("Game WWON!");
+
+            OnGameWon?.Invoke();
+            StopSpawningEnemies();
+            KillAllEnemies();
+        }
+    }
+
+    // Kill all remaining enemies on map.
+    void KillAllEnemies()
+    {
+        var wolves = FindObjectsByType<Wolf>(FindObjectsSortMode.None);
+
+        foreach (var wolf in wolves)
+        {
+            wolf.InstantDeath();
+        }
+    }
+
+    void SpawnEnemies()
+    {
+        foreach (Cave cave in caves) cave.Spawn();
+    }
+
+    void StopSpawningEnemies()
+    {
+        foreach (Cave cave in caves) cave.StopAllCoroutines();
     }
 
     void HandleOnConstructedTier3TC()

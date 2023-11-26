@@ -196,6 +196,7 @@ GameObject:
   - component: {fileID: 35860182}
   - component: {fileID: 35860181}
   - component: {fileID: 35860180}
+  - component: {fileID: 35860183}
   m_Layer: 5
   m_Name: LevelUp
   m_TagString: Untagged
@@ -305,6 +306,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 35860178}
   m_CullTransparentMesh: 1
+--- !u!114 &35860183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 35860178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7384ec7a0829764fb8b8801bf1b55e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeButton: {fileID: 35860180}
+  tc: {fileID: 1158605446}
 --- !u!1 &156483356
 GameObject:
   m_ObjectHideFlags: 0
@@ -2181,6 +2196,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1158605446 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3926200645597014365, guid: 4ae1e4dbcdb7416498c87e508d70b958, type: 3}
+  m_PrefabInstance: {fileID: 5525255681903622381}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e88d76ba19d0ef47bea407853d27bd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1328581672
 GameObject:
   m_ObjectHideFlags: 0

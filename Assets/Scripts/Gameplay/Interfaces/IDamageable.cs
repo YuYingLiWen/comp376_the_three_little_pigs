@@ -8,6 +8,9 @@ internal interface IDamageable
     // Check if this object is dead.
     bool IsDead();
 
+    // Kill the object immediately.
+    void InstantDeath();
+
     /// <summary>
     /// Return reference to this object.
     /// </summary>

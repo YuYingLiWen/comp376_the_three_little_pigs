@@ -113,6 +113,11 @@ public class Wolf : MonoBehaviour, IDamageable
         target.GetComponent<IDamageable>().TakeDamage(attackDamage);
     }
 
+    public void InstantDeath()
+    {
+        TakeDamage(9999);
+    }
+
     AudioSource audioS;
     [SerializeField] AudioClip attackSFX;
     [SerializeField] AudioClip onClickSFX;

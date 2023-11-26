@@ -27,13 +27,17 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
     {
         Debug.Log("Clicked " + name);
         //audioS.PlayOneShot(onClickSFX);
-        OverlayUIController.Instance.DisplayTC_Menu(true);
+
+        if(currentTier < maxTier)
+            OverlayUIController.Instance.DisplayTC_Menu(true);
     }
 
     public void Deselect()
     {
         Debug.Log("Deseelect " + name);
-        OverlayUIController.Instance.DisplayTC_Menu(false);
+
+        if (currentTier < maxTier)
+            OverlayUIController.Instance.DisplayTC_Menu(false);
     }
 
     public void Upgrade()
@@ -44,6 +48,9 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
 
         Debug.Log("Town Center Upgraded to tier : " + currentTier);
 
+        if(currentTier >= maxTier)
+            OverlayUIController.Instance.DisplayTC_Menu(false);
+
         //audioS.PlayOneShot(upgradeSFX);
 
         ChangeSprite();
@@ -53,11 +60,11 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
     {
         if(currentTier == 2)
         {
-            sRend.sprite = tier2sprite;
+            sRend.sprite = tierTwoSprite;
         }
         else if (currentTier == 3)
         {
-            sRend.sprite = tier3sprite;
+            sRend.sprite = tierThreeSprite;
             LevelManager.Instance.OnConstructedTier3TC?.Invoke();
         }
     }
@@ -85,10 +92,14 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
         return gameObject;
     }
 
+    public void InstantDeath()
+    {
+        TakeDamage(9999);
+    }
 
     SpriteRenderer sRend;
-    [SerializeField] Sprite tier2sprite;
-    [SerializeField] Sprite tier3sprite;
+    [SerializeField] Sprite tierTwoSprite;
+    [SerializeField] Sprite tierThreeSprite;
 
 
     AudioSource audioS;
@@ -100,6 +111,6 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
 
     float fovRange = 3.0f;
 
-    int currentTier = 0;
+    int currentTier = 1;
     readonly int maxTier = 3;
 }
