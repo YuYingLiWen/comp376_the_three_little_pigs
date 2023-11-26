@@ -96,6 +96,11 @@ public class PlayerUnit : MonoBehaviour, IInteractable
 
     public void SetDestination(Vector3 location)
     {
+        // orient the pig in the direction he's going
+        Vector3 direction = location - transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        GetComponent<SpriteRenderer>().transform.rotation = Quaternion.Euler(0f, 0f, angle-90f);
+
         navMeshAgent.SetDestination(location);
     }
 

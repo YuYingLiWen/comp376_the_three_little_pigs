@@ -2,9 +2,28 @@ using System.Collections;
 
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEditor.FilePathAttribute;
 
 public class Wolf : MonoBehaviour, IDamageable
 {
+    AudioSource audioS;
+    [SerializeField] AudioClip attackSFX;
+    [SerializeField] AudioClip onClickSFX;
+    [SerializeField] AudioClip onTakeDamageSFX;
+
+
+    Transform target;
+    NavMeshAgent agent;
+
+    Health health;
+
+    [SerializeField] int attackDamage = 1;
+
+    [SerializeField] float distanceToTarget = 2.0f;
+
+    Coroutine attackRoutine = null;
+
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -39,6 +58,11 @@ public class Wolf : MonoBehaviour, IDamageable
                 attackRoutine = StartCoroutine(AttackRoutine());
             }
         }
+
+        // orient the pig in the direction he's going
+        Vector3 direction = target.position - transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        GetComponent<SpriteRenderer>().transform.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
     }
 
 
@@ -117,21 +141,4 @@ public class Wolf : MonoBehaviour, IDamageable
     {
         TakeDamage(9999);
     }
-
-    AudioSource audioS;
-    [SerializeField] AudioClip attackSFX;
-    [SerializeField] AudioClip onClickSFX;
-    [SerializeField] AudioClip onTakeDamageSFX;
-
-
-    Transform target;
-    NavMeshAgent agent;
-
-    Health health;
-
-    [SerializeField] int attackDamage = 1;
-
-    [SerializeField] float distanceToTarget = 2.0f;
-
-    Coroutine attackRoutine = null;
 }
