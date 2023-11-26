@@ -2,7 +2,6 @@ using System.Collections;
 
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEditor.FilePathAttribute;
 
 public class Wolf : MonoBehaviour, IDamageable
 {
