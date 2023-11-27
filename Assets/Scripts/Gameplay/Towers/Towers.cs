@@ -124,12 +124,34 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
             pig.transform.position = transform.position + exit;
         }
         garrisonedUnits.Clear();
+
+        // Indicate that tower is occupied
+        Transform circleTransform = transform.Find("CircleSelect");
+        if (circleTransform != null)
+        {
+            circleTransform.gameObject.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("Child object 'CircleSelect' not found.");
+        }
     }
 
     public void Garrison(GameObject pig)
     {
         garrisonedUnits.Add(pig);
         pig.SetActive(false);
+
+        // Indicate that tower is occupied
+        Transform circleTransform = transform.Find("CircleSelect");
+        if (circleTransform != null)
+        {
+            circleTransform.gameObject.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("Child object 'CircleSelect' not found.");
+        }
     }
 
     public virtual void Upgrade()

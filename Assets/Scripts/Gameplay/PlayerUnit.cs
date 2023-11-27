@@ -5,13 +5,11 @@ using UnityEngine.AI;
 public class PlayerUnit : MonoBehaviour, IInteractable
 {
     NavMeshAgent navMeshAgent;
-    public GameObject targetTree;// = Vector3.zero;
-    public GameObject targetStoneMine;
+    public GameObject targetTree, targetStoneMine, targetTower;
     bool carryingWood = false;
     bool carryingStone = false;
     Vector3 housePos = Vector3.zero;
     GameObject house;
-    private Color originalColor;
     AudioSource audioSource;
     public AudioClip woodDepositClip, stoneDepositClip, woodChopClip, stoneMiningClip;
 
@@ -95,7 +93,7 @@ public class PlayerUnit : MonoBehaviour, IInteractable
         
         if (targetStoneMine != null)
         {
-            if (Mathf.Abs(transform.position.x - targetStoneMine.transform.position.x) < 0.001f && Mathf.Abs(transform.position.y - targetStoneMine.transform.position.y) < 0.001f)
+            if (Mathf.Abs(transform.position.x - targetStoneMine.transform.position.x) < 0.01f && Mathf.Abs(transform.position.y - targetStoneMine.transform.position.y) < 0.01f)
             {
                 // pig is at the stone mine, now pig turns back towards house to deposit the stone
                 carryingStone = true;
@@ -104,6 +102,17 @@ public class PlayerUnit : MonoBehaviour, IInteractable
                 audioSource.Play();
 
                 this.SetDestination(housePos);
+            }
+        }
+
+        if (targetTower != null)
+        {
+            if (Mathf.Abs(transform.position.x - targetTower.transform.position.x) < 0.01f && Mathf.Abs(transform.position.y - targetTower.transform.position.y) < 0.01f)
+            {
+                // pig is at the tower
+                Debug.Log("Pig is at tower, garrisoning!");
+                targetTower.GetComponent<Towers>().Garrison(this.gameObject);
+                targetTower = null;
             }
         }
 
@@ -173,32 +182,29 @@ public class PlayerUnit : MonoBehaviour, IInteractable
 
     public void OnClick()
     {
-        Renderer renderer = GetComponent<Renderer>();
-        if (renderer != null)
-        {
-            originalColor = renderer.material.color;
-        }
-
         OverlayUIController.Instance.DisplayBuildMenu(true);
 
-        // Change the object's color to indicate selection
-        ChangeObjectColor(Color.red);
-        Debug.Log("Clicked " + name);
+        // Add circle around player to indicate selection
+        Transform circleTransform = transform.Find("CircleSelect");
+        if (circleTransform != null) {
+            circleTransform.gameObject.SetActive(true);
+        } else {
+            Debug.LogError("Child object 'CircleSelect' not found.");
+        }
 
         // pig sound here
     }
     public void Deselect()
     {
-        //TODO: Put color change and wtv that has to do with this object here
-        Renderer renderer = GetComponent<Renderer>();
-        if (renderer != null)
-        {
-            renderer.material.color = originalColor;
-        }
         OverlayUIController.Instance.DisplayBuildMenu(false);
+        
+        Transform circleTransform = transform.Find("CircleSelect");
 
-
-        Debug.Log("Deselect " + name);
+        if (circleTransform != null) {
+            circleTransform.gameObject.SetActive(false);
+        } else {
+            Debug.LogError("Child object 'CircleSelect' not found.");
+        }
 
     }
     // Change the color of a selected object

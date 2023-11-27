@@ -20,7 +20,6 @@ public sealed class NightBehavior : MonoBehaviour
     {
         night = GetComponent<Image>();
         audioSource = GetComponent<AudioSource>();
-
     }
 
     [ContextMenu("ToNight")]

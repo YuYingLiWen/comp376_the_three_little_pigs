@@ -92,6 +92,10 @@ public class MouseControl : MonoBehaviour
                         audioSource.Play();
 
                         CollectStone(selectedPig, hit);
+                    }else if(hit.collider.tag == "Tower")
+                    {
+                        Debug.Log("Collider is tower, pig is going there!");
+                        GoToTower(selectedPig, hit);
                     }
 
                     // else if tag is tower then man tower...
@@ -126,6 +130,16 @@ public class MouseControl : MonoBehaviour
         {
             selectedPig.targetStoneMine = stoneMine;
             selectedPig.SetDestination(stoneMine.transform.position);
+        }
+    }
+
+    private void GoToTower(PlayerUnit selectedPig, RaycastHit hit)
+    {
+        GameObject tower = hit.collider.gameObject;
+        if (tower != null)
+        {
+            selectedPig.targetTower = tower;
+            selectedPig.SetDestination(tower.transform.position);
         }
     }
 }
