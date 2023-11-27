@@ -110,5 +110,7 @@ public class GameManager : MonoBehaviour
 
     public InputSystem GetInputSystem() => inputSystem;
 
+    public AudioManager GetAudioManager => audioManager;
+
     private const string LEVEL_MANAGER = "LevelManager";
 }
