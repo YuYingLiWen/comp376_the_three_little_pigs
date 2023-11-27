@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -15,7 +16,8 @@ using UnityEngine;
 public sealed class LevelManager : MonoBehaviour
 {
     [SerializeField] NightBehavior nightBehavior;
-    Cave[] caves;
+    // Cave[] caves;
+    public List<Cave> caves = new List<Cave>();
 
     private static LevelManager instance = null;
     public static LevelManager Instance => instance;
@@ -34,9 +36,9 @@ public sealed class LevelManager : MonoBehaviour
 
         if(!debug) inputSystem = gameManager.GetInputSystem();
 
-        caves = FindObjectsByType<Cave>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        /*caves = FindObjectsByType<Cave>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
 
-        Debug.Log("Cave count: " + caves.Length);
+        Debug.Log("Cave count: " + caves.Length);*/
         if(!uiController) uiController = FindFirstObjectByType<OverlayUIController>();
     }
 

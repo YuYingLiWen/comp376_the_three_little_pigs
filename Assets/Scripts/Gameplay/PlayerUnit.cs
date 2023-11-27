@@ -6,7 +6,9 @@ public class PlayerUnit : MonoBehaviour, IInteractable
 {
     NavMeshAgent navMeshAgent;
     public GameObject targetTree;// = Vector3.zero;
+    public GameObject targetStoneMine;
     bool carryingWood = false;
+    bool carryingStone = false;
     Vector3 housePos = Vector3.zero;
     GameObject house;
     private Color originalColor;
@@ -56,21 +58,64 @@ public class PlayerUnit : MonoBehaviour, IInteractable
 
                 // destroy tree object
                 Destroy(targetTree);
+
+                // Spawn new tree sp that num of trees is always same
+                GameObject envGameObject = GameObject.Find("Environment");
+                if (envGameObject != null)
+                {
+                    // Access the ScriptA component and call the public function
+                    SpawnEnvironment scriptSpawnEnv = envGameObject.GetComponent<SpawnEnvironment>();
+                    if (scriptSpawnEnv != null)
+                    {
+                        scriptSpawnEnv.SpawnOneTree(); // actually spawn 1 tree
+                    }
+                    else
+                    {
+                        Debug.LogError("No SpawnEnvironment component on the Environement GameObject.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Didn't find object called Environment! (Needed for spawning resources)");
+                }
             }
         }
 
-        if(carryingWood)
+        
+        if (targetStoneMine != null)
         {
+            if (Mathf.Abs(transform.position.x - targetStoneMine.transform.position.x) < 0.001f && Mathf.Abs(transform.position.y - targetStoneMine.transform.position.y) < 0.001f)
+            {
+                // pig is at the stone mine, now pig turns back towards house to deposit the stone
+                carryingStone = true;
 
+                this.SetDestination(housePos);
+            }
+        }
+
+
+        if (carryingWood)
+        {
             if (Mathf.Abs(transform.position.x - housePos.x) < GetHouseSize().x && Mathf.Abs(transform.position.y - housePos.y) < GetHouseSize().y)
             {
                 carryingWood = false;
-                Debug.Log("Wood depositied! Update ressources here (like +10 wood)");
+                // Debug.Log("Wood depositied! Update ressources here (like +10 wood)");
 
                 // update ressources 
                 LevelManager.Instance.AddWood(10);
             }
+        } else if (carryingStone)
+        {
+
+            if (Mathf.Abs(transform.position.x - housePos.x) < GetHouseSize().x && Mathf.Abs(transform.position.y - housePos.y) < GetHouseSize().y)
+            {
+                carryingStone = false;
+
+                // update ressources 
+                LevelManager.Instance.AddStone(10);
+            }
         }
+
     }
 
     Vector2 GetHouseSize()

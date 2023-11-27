@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 6c1863f16bfc25a4eb9c8717712744b6
+guid: b2eb933fc33168841a2e85f4b0a4283c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 9027725136450751466
-    second: dummyground_0
+      213: -4406087302895280850
+    second: ground_tile new_0
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -98,13 +98,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: dummyground_0
+      name: ground_tile new_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 501
-        height: 501
+        width: 1024
+        height: 1024
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,8 +112,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: aeb03004e2ce84d70800000000000000
-      internalID: 9027725136450751466
+      spriteID: e2d519541fe6ad2c0800000000000000
+      internalID: -4406087302895280850
       vertices: []
       indices: 
       edges: []
@@ -129,7 +129,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      dummyground_0: 9027725136450751466
+      ground_tile new_0: -4406087302895280850
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

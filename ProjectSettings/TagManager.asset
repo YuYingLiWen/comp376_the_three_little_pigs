@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Tree
   - Tower
+  - Stone
   layers:
   - Default
   - TransparentFX

@@ -71,8 +71,11 @@ public class MouseControl : MonoBehaviour
                     } else if (hit.collider.tag == "Tree")// else if tag is tree then go fetch tree
                     {
                         CollectTree(selectedPig, hit);
+                    } else if (hit.collider.tag == "Stone")// else if tag is stone then go fetch stone
+                    {
+                        CollectStone(selectedPig, hit);
                     }
-                    
+
                     // else if tag is tower then man tower...
                 }
 
@@ -95,6 +98,16 @@ public class MouseControl : MonoBehaviour
             // tree will now be stored in the PlayerUnit object and used in OnCollisionEnter to collect
             selectedPig.targetTree = tree;
             selectedPig.SetDestination(tree.transform.position);
+        }
+    }
+
+    private void CollectStone(PlayerUnit selectedPig, RaycastHit hit)
+    {
+        GameObject stoneMine = hit.collider.gameObject;
+        if (stoneMine != null)
+        {
+            selectedPig.targetStoneMine = stoneMine;
+            selectedPig.SetDestination(stoneMine.transform.position);
         }
     }
 }

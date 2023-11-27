@@ -57,11 +57,6 @@ public class Wolf : MonoBehaviour, IDamageable
                 attackRoutine = StartCoroutine(AttackRoutine());
             }
         }
-
-        // orient the pig in the direction he's going
-        Vector3 direction = target.position - transform.position;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        GetComponent<SpriteRenderer>().transform.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
     }
 
 
