@@ -12,15 +12,21 @@ public sealed class NightBehavior : MonoBehaviour
 
     [SerializeField] float time = 5.0f;
 
+    public AudioClip dayClip, nightClip;
+    AudioSource audioSource;
+
 
     private void Start()
     {
-        night = GetComponent<Image>();  
+        night = GetComponent<Image>();
+        audioSource = GetComponent<AudioSource>();
+
     }
 
     [ContextMenu("ToNight")]
     public void ToNight()
     {
+        audioSource.PlayOneShot(nightClip); // wolf howl
         StartCoroutine(ToNightRoutine());
     }
 
@@ -38,6 +44,7 @@ public sealed class NightBehavior : MonoBehaviour
     [ContextMenu("ToDay")]
     public void ToDay()
     {
+        audioSource.PlayOneShot(dayClip); // cock sound
         StartCoroutine(ToDayRoutine());
     }
 

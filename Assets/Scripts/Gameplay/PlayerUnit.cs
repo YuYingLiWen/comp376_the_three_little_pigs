@@ -12,6 +12,8 @@ public class PlayerUnit : MonoBehaviour, IInteractable
     Vector3 housePos = Vector3.zero;
     GameObject house;
     private Color originalColor;
+    AudioSource audioSource;
+    public AudioClip woodDepositClip, stoneDepositClip, woodChopClip, stoneMiningClip;
 
     [SerializeField] Transform night_fov;
 
@@ -40,6 +42,12 @@ public class PlayerUnit : MonoBehaviour, IInteractable
         {
             Debug.Log("Error: No object with tag house has been found! Needed for ressource deposition.");
         }
+
+        audioSource = GetComponent<AudioSource>();
+        if(audioSource == null)
+        {
+            Debug.LogWarning("Didn't find an audio source for the player unit!");
+        }
     }
 
     void Update()
@@ -53,6 +61,9 @@ public class PlayerUnit : MonoBehaviour, IInteractable
             {
                 // pig is at the tree, now pig turns back towards house to deposit the wood
                 carryingWood = true;
+
+                audioSource.clip = woodChopClip;
+                audioSource.Play();
 
                 this.SetDestination(housePos);
 
@@ -89,6 +100,9 @@ public class PlayerUnit : MonoBehaviour, IInteractable
                 // pig is at the stone mine, now pig turns back towards house to deposit the stone
                 carryingStone = true;
 
+                audioSource.clip = stoneMiningClip;
+                audioSource.Play();
+
                 this.SetDestination(housePos);
             }
         }
@@ -96,20 +110,28 @@ public class PlayerUnit : MonoBehaviour, IInteractable
 
         if (carryingWood)
         {
-            if (Mathf.Abs(transform.position.x - housePos.x) < GetHouseSize().x && Mathf.Abs(transform.position.y - housePos.y) < GetHouseSize().y)
+            // deposit wood at house
+            if (Mathf.Abs(transform.position.x - housePos.x) < GetHouseSize().x/2 && Mathf.Abs(transform.position.y - housePos.y) < GetHouseSize().y/2)
             {
                 carryingWood = false;
                 // Debug.Log("Wood depositied! Update ressources here (like +10 wood)");
+
+                audioSource.clip = woodDepositClip;
+                audioSource.Play();
 
                 // update ressources 
                 LevelManager.Instance.AddWood(10);
             }
         } else if (carryingStone)
         {
-
-            if (Mathf.Abs(transform.position.x - housePos.x) < GetHouseSize().x && Mathf.Abs(transform.position.y - housePos.y) < GetHouseSize().y)
+            // deposit stone at house
+            if (Mathf.Abs(transform.position.x - housePos.x) < GetHouseSize().x/2 && Mathf.Abs(transform.position.y - housePos.y) < GetHouseSize().y/2)
             {
                 carryingStone = false;
+
+                // Stone deposit sound
+                audioSource.clip = stoneDepositClip;
+                audioSource.Play();
 
                 // update ressources 
                 LevelManager.Instance.AddStone(10);
@@ -162,6 +184,8 @@ public class PlayerUnit : MonoBehaviour, IInteractable
         // Change the object's color to indicate selection
         ChangeObjectColor(Color.red);
         Debug.Log("Clicked " + name);
+
+        // pig sound here
     }
     public void Deselect()
     {

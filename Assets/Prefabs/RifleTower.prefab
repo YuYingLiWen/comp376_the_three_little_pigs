@@ -5026,6 +5026,9 @@ MonoBehaviour:
   exit: {x: 0, y: 0, z: 0}
   night_fov: {fileID: 6471294963636277761}
   so: {fileID: 11400000, guid: 977d770781a836246b210cef447f02a1, type: 2}
+  towerSelectClip: {fileID: 8300000, guid: e495fb77cd9a77d4881ea9f941588bae, type: 3}
+  towerUpgradeClip: {fileID: 8300000, guid: 035afee944fdb1541b38d317db3a57ed, type: 3}
+  towerBuildClip: {fileID: 8300000, guid: 43de5b95ce4a7fe4fbf68300aa08737b, type: 3}
   target: {fileID: 0}
   rangeIndicator: {fileID: 7629898423894628555}
 --- !u!212 &8262905566382213971

@@ -14,6 +14,9 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
 
     [SerializeField] protected TowerScriptableObject so; // Default assign tier 1.
 
+    public AudioClip towerSelectClip, towerUpgradeClip, towerBuildClip;
+    
+
     // Returns the upgrade level/tier of the tower.
     public int GetCurrentTier() => currentTier;
 
@@ -30,6 +33,9 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
         coll.radius = so.Range;
         rangeIndicator.transform.localScale = Vector3.one * so.Range;
         night_fov.localScale = Vector3.one * so.Range;
+
+        audioS.clip = towerBuildClip;
+        audioS.Play();
     }
 
     protected virtual void Update()
@@ -159,13 +165,15 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
     {
         rend.sprite = so.TowerSprite;
         // Play SFX
+        audioS.clip = towerUpgradeClip;
+        audioS.Play();
         // Play VFX?
     }
 
     public void OnClick()
     {
-        //audioS.Stop();
-        //audioS.PlayOneShot(so.OnClickSFX);
+        audioS.clip = towerSelectClip;
+        audioS.Play();
 
         rangeIndicator.SetActive(true);
 

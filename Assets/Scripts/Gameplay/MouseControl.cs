@@ -13,7 +13,17 @@ public class MouseControl : MonoBehaviour
     [SerializeField] OverlayUIController UIControl;
 
     private GameObject selectedObject;
+    AudioSource audioSource;
+    public AudioClip woodChopClip, stoneMiningClip;
 
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            Debug.LogWarning("Didn't find an audio source for the camera!");
+        }
+    }
     private void Update()
     {
         if (Input.GetMouseButtonDown(0) && !IsPointerOverUI()) // left click (to select object)
@@ -70,9 +80,17 @@ public class MouseControl : MonoBehaviour
                         Instantiate(markerPrefab, hit.point + new Vector3(0.0f, 0.1f, 0.0f), markerPrefab.transform.rotation);
                     } else if (hit.collider.tag == "Tree")// else if tag is tree then go fetch tree
                     {
+                        // make wood sound
+                        audioSource.clip = woodChopClip;
+                        audioSource.Play();
+
                         CollectTree(selectedPig, hit);
                     } else if (hit.collider.tag == "Stone")// else if tag is stone then go fetch stone
                     {
+                        // make stone stone, even tho pig ain't there yet, just for impact
+                        audioSource.clip = stoneMiningClip;
+                        audioSource.Play();
+
                         CollectStone(selectedPig, hit);
                     }
 

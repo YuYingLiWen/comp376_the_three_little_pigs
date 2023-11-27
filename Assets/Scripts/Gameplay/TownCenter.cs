@@ -5,6 +5,8 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
 {
     [SerializeField] Transform night_fov;
 
+    //public AudioClip houseClickClip, houseUpgradeClip;
+
     private void Awake()
     {
         audioS = GetComponent<AudioSource>();
@@ -26,9 +28,12 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
     public void OnClick()
     {
         Debug.Log("Clicked " + name);
-        //audioS.PlayOneShot(onClickSFX);
+        audioS.PlayOneShot(onClickSFX);
 
-        if(currentTier < maxTier)
+        /*audioS.clip = houseClickClip;
+        audioS.Play();*/
+
+        if (currentTier < maxTier)
             OverlayUIController.Instance.DisplayTC_Menu(true);
     }
 
@@ -61,8 +66,10 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
     void OnUpgraded()
     {
         ChangeSprite();
-        //audioS.PlayOneShot(upgradeSFX);
+        audioS.PlayOneShot(upgradeSFX);
         // Play VFX?
+        /*audioS.clip = houseUpgradeClip;
+        audioS.Play();*/
 
         IncreaseCosts();
     }

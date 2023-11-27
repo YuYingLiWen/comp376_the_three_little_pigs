@@ -128,7 +128,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      stoneMine2_0: 4222269996763825985
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
