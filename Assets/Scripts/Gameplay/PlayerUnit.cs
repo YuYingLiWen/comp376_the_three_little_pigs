@@ -11,7 +11,7 @@ public class PlayerUnit : MonoBehaviour, IInteractable
     Vector3 housePos = Vector3.zero;
     GameObject house;
     AudioSource audioSource;
-    public AudioClip woodDepositClip, stoneDepositClip, woodChopClip, stoneMiningClip;
+    public AudioClip woodDepositClip, stoneDepositClip, woodChopClip, stoneMiningClip, pigClip;
 
     [SerializeField] Transform night_fov;
 
@@ -192,7 +192,9 @@ public class PlayerUnit : MonoBehaviour, IInteractable
             Debug.LogError("Child object 'CircleSelect' not found.");
         }
 
-        // pig sound here
+        // pig sound
+        audioSource.clip = pigClip;
+        audioSource.Play();
     }
     public void Deselect()
     {

@@ -874,6 +874,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 2859927451159805378, guid: 5a6cd1e280b826c458d2245891c6af88, type: 3}
+      propertyPath: pigClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 3c9194cac10dbcf42b733ad0d6ca536f, type: 3}
+    - target: {fileID: 2859927451159805378, guid: 5a6cd1e280b826c458d2245891c6af88, type: 3}
       propertyPath: woodChopClip
       value: 
       objectReference: {fileID: 8300000, guid: a2371206e3ed13b45bb0ba5109da0e77, type: 3}
@@ -3238,7 +3242,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8322084497451890420, guid: 76a41025bc0136547a4f005d7c9a92d6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4143,6 +4147,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 2859927451159805378, guid: 5a6cd1e280b826c458d2245891c6af88, type: 3}
+      propertyPath: pigClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 3c9194cac10dbcf42b733ad0d6ca536f, type: 3}
     - target: {fileID: 2859927451159805378, guid: 5a6cd1e280b826c458d2245891c6af88, type: 3}
       propertyPath: woodChopClip
       value: 
@@ -5239,6 +5247,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 2859927451159805378, guid: 5a6cd1e280b826c458d2245891c6af88, type: 3}
+      propertyPath: pigClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 3c9194cac10dbcf42b733ad0d6ca536f, type: 3}
     - target: {fileID: 2859927451159805378, guid: 5a6cd1e280b826c458d2245891c6af88, type: 3}
       propertyPath: woodChopClip
       value: 
