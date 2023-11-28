@@ -10,6 +10,7 @@ public class CameraController : MonoBehaviour
     public float minOrthographicSize;
     public float maxOrthographicSize;
     public float scrollSpeed;
+    public static float newOrthographicSize = 1f;
 
     private void Start()
     {
@@ -45,7 +46,7 @@ public class CameraController : MonoBehaviour
 
         // Scrolling in and out in 2D uses ortographic size
         float scrollInput = Input.GetAxis("Mouse ScrollWheel");
-        float newOrthographicSize = Camera.main.orthographicSize - scrollInput * scrollSpeed;
+        newOrthographicSize = Camera.main.orthographicSize - scrollInput * scrollSpeed;
         // Scale panSpeed with how zoomed out you are. To avoid the screen panning slow when zoomed out.
         panSpeed = startPanSpeed + startPanSpeed * Camera.main.orthographicSize / minOrthographicSize;
 

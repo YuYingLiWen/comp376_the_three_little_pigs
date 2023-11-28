@@ -14,6 +14,7 @@ public class PlayerUnit : MonoBehaviour, IInteractable
     public AudioClip woodDepositClip, stoneDepositClip, woodChopClip, stoneMiningClip, pigClip;
 
     [SerializeField] Transform night_fov;
+    float night_fov_size = 20f; // adjust the size of the night light circle here
 
     private void Awake()
     {
@@ -51,6 +52,9 @@ public class PlayerUnit : MonoBehaviour, IInteractable
     void Update()
     {
         night_fov.position = Camera.main.WorldToScreenPoint(transform.position);
+        // scale the night fov circle with the zooming so that it remains the same
+        night_fov.localScale = new Vector3(night_fov_size / CameraController.newOrthographicSize, night_fov_size / CameraController.newOrthographicSize, 1);
+
 
         if (targetTree != null)
         {

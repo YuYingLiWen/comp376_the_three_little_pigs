@@ -7,6 +7,7 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
 {
     [SerializeField] private Vector3 exit;
     [SerializeField] Transform night_fov;
+    float night_fov_size = 30f; // adjust night fov circle size here
     private List<GameObject> garrisonedUnits = new();
     protected List<GameObject> enemiesInRange = new();
 
@@ -16,6 +17,7 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
 
     public AudioClip towerSelectClip, towerUpgradeClip, towerBuildClip;
     
+    float range_indicator_size; // size of range indicator shall be same as night_fov
 
     // Returns the upgrade level/tier of the tower.
     public int GetCurrentTier() => currentTier;
@@ -41,6 +43,8 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
     protected virtual void Update()
     {
         night_fov.position = Camera.main.WorldToScreenPoint(transform.position);
+        // scale the night fov circle with the zooming so that it remains the same
+        night_fov.localScale = new Vector3(night_fov_size / CameraController.newOrthographicSize, night_fov_size / CameraController.newOrthographicSize, 1);
 
         if (enemiesInRange.Count <= 0 && target == null) return;
 
