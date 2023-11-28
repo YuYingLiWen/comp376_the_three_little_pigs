@@ -26,6 +26,11 @@ public sealed class LevelManager : MonoBehaviour
 
     OverlayUIController uiController;
 
+    bool isPaused = false;
+
+    // Check game is paused or not
+    public bool IsPaused => isPaused;
+
     private void Awake()
     {
         if (!instance) instance = this;
@@ -83,6 +88,19 @@ public sealed class LevelManager : MonoBehaviour
 
         OnWoodUpdate?.Invoke(resourceWood);
         OnStoneUpdate?.Invoke(resourceStone);
+    }
+
+
+    public void Pause()
+    {
+        Time.timeScale = 0.0f;
+        isPaused = true;
+    }
+
+    public void Unpause()
+    {
+        Time.timeScale = 1.0f;
+        isPaused = false;
     }
 
     private void HandleMapScroll(Vector2 axis)
@@ -242,8 +260,6 @@ public sealed class LevelManager : MonoBehaviour
     {
         atFinalObjective = true;
     }
-
-
 
     bool atFinalObjective = false;
     readonly int wavesToSurive = 3;
