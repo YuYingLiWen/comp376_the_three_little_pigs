@@ -24,7 +24,10 @@ public class InGameMenu : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))
         {
-            Pause();
+            if (LevelManager.Instance.IsPaused)
+                Unpause();
+            else
+                Pause();
         }
     }
 
@@ -49,7 +52,7 @@ public class InGameMenu : MonoBehaviour
 
     public void Pause()
     {
-        LevelManager.Instance.Unpause();
+        LevelManager.Instance.Pause();
 
         pauseMenu.SetActive(true);
     }
