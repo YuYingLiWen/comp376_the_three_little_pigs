@@ -57,8 +57,8 @@ public sealed class LevelManager : MonoBehaviour
 
         OnGameWon += gameManager.HandleGameWon;
 
-        inputSystem.OnMouseLeftClick += HandleMouseLeftClick;
-        inputSystem.OnMapScroll += HandleMapScroll;
+       // inputSystem.OnMouseLeftClick += HandleMouseLeftClick;
+       // inputSystem.OnMapScroll += HandleMapScroll;
     }
 
     private void OnDisable()
@@ -73,8 +73,8 @@ public sealed class LevelManager : MonoBehaviour
 
         OnGameWon -= gameManager.HandleGameWon;
 
-        inputSystem.OnMouseLeftClick -= HandleMouseLeftClick;
-        inputSystem.OnMapScroll -= HandleMapScroll;
+        //inputSystem.OnMouseLeftClick -= HandleMouseLeftClick;
+        //inputSystem.OnMapScroll -= HandleMapScroll;
 
 
         instance = null;
