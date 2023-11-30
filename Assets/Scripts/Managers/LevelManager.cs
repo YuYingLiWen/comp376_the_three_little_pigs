@@ -278,6 +278,13 @@ public sealed class LevelManager : MonoBehaviour
     void HandleGameOver()
     {
         Time.timeScale = 0.0f;
+
+        var t = FindObjectsByType<Towers>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+
+        foreach (var tower in t)
+        {
+            Destroy(tower.gameObject);
+        }
     }
 
     bool atFinalObjective = false;

@@ -764,7 +764,7 @@ MonoBehaviour:
   nightBehavior: {fileID: 1945831088}
   caves: []
   debug: 1
-  delayBetweenCycle: 10
+  delayBetweenCycle: 60
   objectives: {fileID: 1161589875}
   tc: {fileID: 1158605446}
 --- !u!4 &156483358
@@ -1140,7 +1140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.94680595, g: 0, b: 1, a: 1}
+  m_Color: {r: 0.9888642, g: 0.7971698, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
