@@ -22,8 +22,6 @@ public sealed class LevelManager : MonoBehaviour
     private static LevelManager instance = null;
     public static LevelManager Instance => instance;
 
-    public bool debug = false;
-
     OverlayUIController uiController;
 
     bool isPaused = false;
@@ -39,7 +37,7 @@ public sealed class LevelManager : MonoBehaviour
         gameManager = GameManager.Instance;
         if (!gameManager) Debug.LogError("Missing Game Manager", gameObject);
 
-        if(!debug) inputSystem = gameManager.GetInputSystem();
+       // if(!debug) inputSystem = gameManager.GetInputSystem();
 
         /*caves = FindObjectsByType<Cave>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
 
@@ -53,8 +51,6 @@ public sealed class LevelManager : MonoBehaviour
         OnWoodUpdate += uiController.HandleWoodUpdate;
         OnNightCycleUpdate += uiController.HandleNightCycleUpdate;
         tc.OnHouseUpgrade += HandleOnHouseUpgrade;
-
-        if (debug) return;
 
         OnGameOver += gameManager.HandleGameOver;
         OnGameOver += HandleGameOver;
@@ -71,8 +67,6 @@ public sealed class LevelManager : MonoBehaviour
         OnWoodUpdate -= uiController.HandleWoodUpdate;
         OnNightCycleUpdate -= uiController.HandleNightCycleUpdate;
         tc.OnHouseUpgrade -= HandleOnHouseUpgrade;
-
-        if (debug) return;
 
         OnGameOver -= gameManager.HandleGameOver;
         OnGameOver -= HandleGameOver;
@@ -200,16 +194,17 @@ public sealed class LevelManager : MonoBehaviour
                 if (isNightTime)
                 {
                     nightBehavior.ToDay();
-                    SpawnEnemies();
+                    StopSpawningEnemies();
                 }
                 else
                 {
                     nightBehavior.ToNight();
-                    StopSpawningEnemies();
+                    SpawnEnemies();
                 }
 
                 isNightTime = !isNightTime;
                 timeElapsed = 0.0f;
+                delayBetweenCycle *= 1.5f;
 
                 if (atFinalObjective)
                 {
@@ -305,7 +300,7 @@ public sealed class LevelManager : MonoBehaviour
     public Action<int> OnWoodUpdate, OnStoneUpdate;
     public Action<float> OnNightCycleUpdate;
 
-    bool isNightTime = true;
+    bool isNightTime = false;
 
     [SerializeField] Objectives objectives;
     [SerializeField] TownCenter tc;
