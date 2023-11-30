@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 
+
 public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDamageable
 {
     [SerializeField] Transform night_fov;
@@ -21,6 +22,7 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
         night_fov.localScale = Vector3.one * fovRange;
 
         health = new Health(10);
+        healthBar.SetActive(false);
 
         OnHouseUpgrade?.Invoke(currentTier);
     }
@@ -36,6 +38,9 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
         Debug.Log("Clicked " + name);
         audioS.PlayOneShot(onClickSFX);
 
+        healthBar.SetActive(true);
+        healthBar.OnHpUpdate(health.Points, health.MaxHealth);
+
         /*audioS.clip = houseClickClip;
         audioS.Play();*/
 
@@ -46,6 +51,8 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
     public void Deselect()
     {
         Debug.Log("Deseelect " + name);
+        healthBar.SetActive(false);
+
 
         if (currentTier < maxTier)
             OverlayUIController.Instance.DisplayTC_Menu(false);
@@ -113,6 +120,7 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
         Debug.Log($"TC took {damage}.");
 
         health.TakeDamage(damage);
+        healthBar.OnHpUpdate(health.Points, health.MaxHealth);
 
         if(IsDead())
         {
@@ -150,6 +158,7 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
 
 
     Health health;
+    [SerializeField] HPBar healthBar;
 
     float fovRange = 3.0f;
 
