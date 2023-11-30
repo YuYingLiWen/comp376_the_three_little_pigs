@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efdcece2215a0ff4e9859a49769d0380, type: 3}
   m_Name: ArrowTier1
   m_EditorClassIdentifier: 
-  woodCost: 10
+  woodCost: 30
   stoneCost: 0
   attack: 1
   range: 10
@@ -20,4 +20,4 @@ MonoBehaviour:
   maxTier: 3
   tower: {fileID: -8078966772632430244, guid: f64b1d3f025af934d9426fde28d4787a, type: 3}
   onClickSFX: {fileID: 0}
-  onShootSFX: {fileID: 0}
+  onShootSFX: {fileID: 8300000, guid: a853fb4006135fd44a64551bfbfeae5f, type: 3}

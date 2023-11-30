@@ -30,8 +30,6 @@ public class OverlayUIController : MonoBehaviour
     {
         if(active)
         {
-            EnableMenu(Menus.TowerUpgradeMenu);
-
             if (!towerUpgradeScript)
             {
                 var m = menus.Find(menu => (menu.name == Menus.TowerUpgradeMenu.ToString()));
@@ -64,6 +62,8 @@ public class OverlayUIController : MonoBehaviour
         DisplayUpgradeTowerMenu(active);
         Debug.Log(selectedTower.GetComponent<Towers>());
         towerUpgradeScript.SetTower(selectedTower.GetComponent<Towers>());
+        EnableMenu(Menus.TowerUpgradeMenu);
+
     }
 
     public void DisableAllMenus()

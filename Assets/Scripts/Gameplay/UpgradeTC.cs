@@ -14,7 +14,7 @@ public class UpgradeTC : MonoBehaviour
         upgradeButton.onClick.AddListener(() => { tc.Upgrade(); });
 
         infoPanel.SetActive(true);
-        infoPanel.DisplayCost(tc.UpgradeCostWood, 0);// TODO: When stone is used put stone here
+        infoPanel.DisplayCost(tc.UpgradeCostWood, tc.UpgradeCostStone);// TODO: When stone is used put stone here
     }
 
     private void OnDisable()

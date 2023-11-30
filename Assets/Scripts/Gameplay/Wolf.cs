@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Wolf : MonoBehaviour, IDamageable
+public class Wolf : MonoBehaviour, IDamageable, IInteractable
 {
     AudioSource audioS;
     [SerializeField] AudioClip attackSFX;
@@ -94,6 +94,7 @@ public class Wolf : MonoBehaviour, IDamageable
     public void TakeDamage(int damage)
     {
         health.TakeDamage(damage);
+        audioS.PlayOneShot(onTakeDamageSFX);
 
         if (!health.IsAlive())
         {
@@ -142,5 +143,15 @@ public class Wolf : MonoBehaviour, IDamageable
     public void InstantDeath()
     {
         TakeDamage(9999);
+    }
+
+    public void OnClick()
+    {
+        audioS.PlayOneShot(onClickSFX);
+    }
+
+    public void Deselect()
+    {
+        // Nothing
     }
 }

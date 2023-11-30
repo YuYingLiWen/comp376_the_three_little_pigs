@@ -57,6 +57,8 @@ public sealed class LevelManager : MonoBehaviour
         if (debug) return;
 
         OnGameOver += gameManager.HandleGameOver;
+        OnGameOver += HandleGameOver;
+
         OnGameWon += gameManager.HandleGameWon;
 
         inputSystem.OnMouseLeftClick += HandleMouseLeftClick;
@@ -73,6 +75,8 @@ public sealed class LevelManager : MonoBehaviour
         if (debug) return;
 
         OnGameOver -= gameManager.HandleGameOver;
+        OnGameOver -= HandleGameOver;
+
         OnGameWon -= gameManager.HandleGameWon;
 
         inputSystem.OnMouseLeftClick -= HandleMouseLeftClick;
@@ -268,6 +272,18 @@ public sealed class LevelManager : MonoBehaviour
         {
             atFinalObjective = true;
             objectives.OnObjective1Completed();
+        }
+    }
+
+    void HandleGameOver()
+    {
+        Time.timeScale = 0.0f;
+
+        var t = FindObjectsByType<Towers>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+
+        foreach (var tower in t)
+        {
+            Destroy(tower.gameObject);
         }
     }
 

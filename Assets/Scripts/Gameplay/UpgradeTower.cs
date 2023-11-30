@@ -13,12 +13,7 @@ public class UpgradeTower : MonoBehaviour
 
     private void OnEnable()
     {
-        upgradeButton.onClick.AddListener(() => { aTower.Upgrade();});
-        sellButton.onClick.AddListener(() => { aTower.Sell();});
 
-        if (!aTower) return;
-        infoPanel.SetActive(true);
-        infoPanel.DisplayCost(aTower.UpgradeCostWood, aTower.UpgradeCostStone);
     }
 
     private void OnDisable()
@@ -31,5 +26,16 @@ public class UpgradeTower : MonoBehaviour
         aTower = null;
     }
 
-    public void SetTower(Towers tower) => this.aTower = tower;
+    public void SetTower(Towers tower)
+    {
+        Debug.LogWarning(tower);
+        this.aTower = tower;
+
+        upgradeButton.onClick.AddListener(() => { aTower.Upgrade(); });
+        sellButton.onClick.AddListener(() => { aTower.Sell(); });
+
+        if (!aTower) return;
+        infoPanel.SetActive(true);
+        infoPanel.DisplayCost(aTower.UpgradeCostWood, aTower.UpgradeCostStone);
+    }    
 }

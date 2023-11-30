@@ -32,6 +32,8 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
     {
         night_fov.position = Camera.main.WorldToScreenPoint(transform.position);
         night_fov.localScale = new Vector3(night_fov_size / CameraController.newOrthographicSize, night_fov_size / CameraController.newOrthographicSize, 1);
+
+        healthBar.transform.position = Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 2.8f);
     }
 
     public void OnClick()
@@ -63,9 +65,9 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
     {
         if (currentTier + 1 > maxTier) return;
 
-        if (!LevelManager.Instance.HasWood(woodCost)) return;
+        if (!LevelManager.Instance.HasResources(woodCost, stoneCost)) return;
 
-        LevelManager.Instance.ConsumeWood(woodCost);
+        LevelManager.Instance.ConsumeResources(woodCost, stoneCost);
         currentTier += 1;
 
         OnUpgraded();

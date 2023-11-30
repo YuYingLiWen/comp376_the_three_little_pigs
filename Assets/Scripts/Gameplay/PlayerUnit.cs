@@ -109,7 +109,8 @@ public class PlayerUnit : MonoBehaviour, IInteractable
             }
         }
 
-        if (targetTower != null)
+        // Taking it out due to last minute 
+        /*if (targetTower != null)
         {
             if (Mathf.Abs(transform.position.x - targetTower.transform.position.x) < 0.01f && Mathf.Abs(transform.position.y - targetTower.transform.position.y) < 0.01f)
             {
@@ -118,7 +119,7 @@ public class PlayerUnit : MonoBehaviour, IInteractable
                 targetTower.GetComponent<Towers>().Garrison(this.gameObject);
                 targetTower = null;
             }
-        }
+        }*/
 
 
         if (carryingWood)
