@@ -9,6 +9,7 @@ public class Wolf : MonoBehaviour, IDamageable
     [SerializeField] AudioClip attackSFX;
     [SerializeField] AudioClip onClickSFX;
     [SerializeField] AudioClip onTakeDamageSFX;
+    public GameObject bloodSplatter;
 
 
     Transform target;
@@ -60,9 +61,11 @@ public class Wolf : MonoBehaviour, IDamageable
     }
 
 
-    private void OnTriggerEnter(Collider other)
+    void OnCollisionEnter(Collision other)
     {
         // chase pig for future update?
+        Debug.Log("other: " + other.collider.name);
+        //TakeDamage
     }
 
 
@@ -95,6 +98,9 @@ public class Wolf : MonoBehaviour, IDamageable
         if (!health.IsAlive())
         {
             // VFX SFX & etc
+            GameObject blood = Instantiate(bloodSplatter, transform.position, transform.rotation);
+            Destroy(blood, 1f); // destroy effect after 1 seconds
+
             WolfPooler.Instance.Pool.Release(this.gameObject);
 
             StopAllCoroutines();
@@ -129,6 +135,8 @@ public class Wolf : MonoBehaviour, IDamageable
     private void Attack()
     {
         target.GetComponent<IDamageable>().TakeDamage(attackDamage);
+        // kill the wolf
+        InstantDeath();
     }
 
     public void InstantDeath()

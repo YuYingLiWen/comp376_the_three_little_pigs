@@ -1595,8 +1595,8 @@ Camera:
   m_GameObject: {fileID: 468356019}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -8089,6 +8089,10 @@ PrefabInstance:
       propertyPath: m_Size.y
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3926200645597014365, guid: 4ae1e4dbcdb7416498c87e508d70b958, type: 3}
+      propertyPath: barkClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 8a30d2ed4dc14a34d84fb95e04296371, type: 3}
     - target: {fileID: 3926200645597014365, guid: 4ae1e4dbcdb7416498c87e508d70b958, type: 3}
       propertyPath: onClickSFX
       value: 
