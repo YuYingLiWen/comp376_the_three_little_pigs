@@ -96,7 +96,7 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
 
         for(int i = 1; i < enemiesInRange.Count; i++)
         {
-            float distance = (enemiesInRange[0].transform.position - position).magnitude;
+            float distance = (enemiesInRange[i].transform.position - position).magnitude;
 
             if (distance < minRange)
             {

@@ -170,8 +170,8 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
     int currentTier = 1;
     readonly int maxTier = 3;
 
-    int woodCost = 10;
-    int stoneCost = 100;
+    int woodCost = 50;
+    int stoneCost = 60;
 
     public Action<int> OnHouseUpgrade;
 }
