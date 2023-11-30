@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 
 public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDamageable
@@ -20,6 +21,8 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
         night_fov.localScale = Vector3.one * fovRange;
 
         health = new Health(10);
+
+        OnHouseUpgrade?.Invoke(currentTier);
     }
 
     void Update()
@@ -100,8 +103,9 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
         else if (currentTier == 3)
         {
             sRend.sprite = tierThreeSprite;
-            LevelManager.Instance.OnConstructedTier3TC?.Invoke();
         }
+
+        OnHouseUpgrade?.Invoke(currentTier);
     }
 
     public void TakeDamage(int damage)
@@ -154,4 +158,6 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
 
     int woodCost = 10;
     int stoneCost = 100;
+
+    public Action<int> OnHouseUpgrade;
 }

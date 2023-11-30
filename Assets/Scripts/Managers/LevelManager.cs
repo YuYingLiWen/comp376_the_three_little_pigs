@@ -52,7 +52,7 @@ public sealed class LevelManager : MonoBehaviour
         OnStoneUpdate += uiController.HandleStoneUpdate;
         OnWoodUpdate += uiController.HandleWoodUpdate;
         OnNightCycleUpdate += uiController.HandleNightCycleUpdate;
-        OnConstructedTier3TC += HandleOnConstructedTier3TC;
+        tc.OnHouseUpgrade += HandleOnHouseUpgrade;
 
         if (debug) return;
 
@@ -68,7 +68,7 @@ public sealed class LevelManager : MonoBehaviour
         OnStoneUpdate -= uiController.HandleStoneUpdate;
         OnWoodUpdate -= uiController.HandleWoodUpdate;
         OnNightCycleUpdate -= uiController.HandleNightCycleUpdate;
-        OnConstructedTier3TC -= HandleOnConstructedTier3TC;
+        tc.OnHouseUpgrade -= HandleOnHouseUpgrade;
 
         if (debug) return;
 
@@ -225,9 +225,13 @@ public sealed class LevelManager : MonoBehaviour
 
     private void CheckWinCondition()
     {
+        objectives.UpdateWavesLeft(wavesToSurive - currentWave);
+
         if(currentWave >= wavesToSurive)
         {
             Debug.Log("Game WWON!");
+
+            objectives.OnObjective2Completed();
 
             OnGameWon?.Invoke();
             StopSpawningEnemies();
@@ -256,9 +260,15 @@ public sealed class LevelManager : MonoBehaviour
         foreach (Cave cave in caves) cave.StopAllCoroutines();
     }
 
-    void HandleOnConstructedTier3TC()
+    void HandleOnHouseUpgrade(int level)
     {
-        atFinalObjective = true;
+        objectives.UpdateHouseLevel(level);
+
+        if(level == 3)
+        {
+            atFinalObjective = true;
+            objectives.OnObjective1Completed();
+        }
     }
 
     bool atFinalObjective = false;
@@ -275,10 +285,12 @@ public sealed class LevelManager : MonoBehaviour
 
     public Action OnGameOver;
     public Action OnGameWon;
-    public Action OnConstructedTier3TC;
 
     public Action<int> OnWoodUpdate, OnStoneUpdate;
     public Action<float> OnNightCycleUpdate;
 
     bool isNightTime = true;
+
+    [SerializeField] Objectives objectives;
+    [SerializeField] TownCenter tc;
 }
