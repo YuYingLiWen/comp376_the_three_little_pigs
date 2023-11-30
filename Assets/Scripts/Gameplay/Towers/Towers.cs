@@ -183,23 +183,22 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
 
     protected virtual void OnFire()
     {
-        //audioS.Stop();
-        //audioS.PlayOneShot(so.OnShootSFX);
+        audioS.Stop();
+        audioS.PlayOneShot(so.OnShootSFX);
     }
 
     protected virtual void OnUpgraded()
     {
         rend.sprite = so.TowerSprite;
-        // Play SFX
-        audioS.clip = towerUpgradeClip;
-        audioS.Play();
+        rangeIndicator.transform.localScale = Vector3.one * so.Range;
+
+        audioS.PlayOneShot(towerUpgradeClip);
         // Play VFX?
     }
 
     public void OnClick()
     {
-        audioS.clip = towerSelectClip;
-        audioS.Play();
+        audioS.PlayOneShot(towerSelectClip);
 
         rangeIndicator.SetActive(true);
 

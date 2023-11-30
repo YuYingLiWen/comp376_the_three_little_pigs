@@ -102,8 +102,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackSFX: {fileID: 0}
-  onClickSFX: {fileID: 0}
-  onTakeDamageSFX: {fileID: 0}
+  onClickSFX: {fileID: 8300000, guid: b090a1b679b6f144f996f4570fe7305e, type: 3}
+  onTakeDamageSFX: {fileID: 8300000, guid: a34a6c112c495cd43a56c51f322db042, type: 3}
   attackDamage: 1
   distanceToTarget: 2
 --- !u!195 &8845862662502322714

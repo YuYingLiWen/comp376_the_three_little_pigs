@@ -15,8 +15,6 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
     {
         audioS = GetComponent<AudioSource>();
         sRend = GetComponent<SpriteRenderer>();
-
-        healthBarPosition = healthBar.transform.position;
     }
 
     private void Start()
