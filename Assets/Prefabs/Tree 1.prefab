@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 9112892974744149552}
   - component: {fileID: 6069299244193251867}
-  - component: {fileID: 5251870279956153731}
+  - component: {fileID: 7946716005749249245}
+  - component: {fileID: 8393926010043564623}
   m_Layer: 0
   m_Name: Tree 1
   m_TagString: Tree
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 3338333653728079778}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.374008, y: 2.2963903, z: 0.029678563}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.4, y: 1.4, z: 1.4}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -85,8 +86,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!135 &5251870279956153731
-SphereCollider:
+--- !u!65 &7946716005749249245
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -104,5 +105,26 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.2
-  m_Center: {x: 0.1, y: -0.3, z: 0}
+  m_Size: {x: 1.1041112, y: 2.6199996, z: 0.19999999}
+  m_Center: {x: 0.2866688, y: 0, z: 0}
+--- !u!65 &8393926010043564623
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3338333653728079778}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.723653, y: 1.2194109, z: 0.19999999}
+  m_Center: {x: -0.570214, y: -0.7002957, z: 0}

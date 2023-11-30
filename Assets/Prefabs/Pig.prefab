@@ -185,6 +185,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetTree: {fileID: 0}
+  targetStoneMine: {fileID: 0}
+  targetTower: {fileID: 0}
+  woodDepositClip: {fileID: 0}
+  stoneDepositClip: {fileID: 0}
+  woodChopClip: {fileID: 0}
+  stoneMiningClip: {fileID: 0}
+  pigClip: {fileID: 0}
   night_fov: {fileID: 4441512735929157885}
 --- !u!195 &5769775792160058353
 NavMeshAgent:
@@ -227,7 +234,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 0.2}
+  m_Size: {x: 1, y: 1, z: 0.4}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &7165158671719422635
 PrefabInstance:
