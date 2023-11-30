@@ -15,6 +15,8 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
     {
         audioS = GetComponent<AudioSource>();
         sRend = GetComponent<SpriteRenderer>();
+
+        healthBarPosition = healthBar.transform.position;
     }
 
     private void Start()
@@ -31,6 +33,8 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
     {
         night_fov.position = Camera.main.WorldToScreenPoint(transform.position);
         night_fov.localScale = new Vector3(night_fov_size / CameraController.newOrthographicSize, night_fov_size / CameraController.newOrthographicSize, 1);
+
+        healthBar.transform.position = Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 2.8f);
     }
 
     public void OnClick()
