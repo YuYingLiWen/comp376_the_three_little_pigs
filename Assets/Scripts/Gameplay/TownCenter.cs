@@ -7,6 +7,7 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
 {
     [SerializeField] Transform night_fov;
     float night_fov_size = 25f; // adjust night fov circle size here
+    public AudioClip barkClip;
 
 
     //public AudioClip houseClickClip, houseUpgradeClip;
@@ -117,6 +118,8 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
 
     public void TakeDamage(int damage)
     {
+        audioS.PlayOneShot(barkClip);
+
         Debug.Log($"TC took {damage}.");
 
         health.TakeDamage(damage);
