@@ -7,7 +7,7 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
 {
     [SerializeField] private Vector3 exit;
     [SerializeField] Transform night_fov;
-    float night_fov_size = 30f; // adjust night fov circle size here
+    float night_fov_size = 10f; // adjust night fov circle size here
     private List<GameObject> garrisonedUnits = new();
     protected List<GameObject> enemiesInRange = new();
 
@@ -34,7 +34,7 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
         // Set ranges
         coll.radius = so.Range;
         rangeIndicator.transform.localScale = Vector3.one * so.Range;
-        night_fov.localScale = Vector3.one * so.Range;
+        night_fov.localScale = (Vector3.one * so.Range);
 
         audioS.clip = towerBuildClip;
         audioS.Play();
@@ -44,7 +44,8 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
     {
         night_fov.position = Camera.main.WorldToScreenPoint(transform.position);
         // scale the night fov circle with the zooming so that it remains the same
-        night_fov.localScale = new Vector3(night_fov_size / CameraController.newOrthographicSize, night_fov_size / CameraController.newOrthographicSize, 1);
+        float scale = (night_fov_size * so.Range) / CameraController.newOrthographicSize;
+        night_fov.localScale = Vector3.one * scale;
 
         if (enemiesInRange.Count <= 0 && target == null) return;
 
@@ -165,8 +166,7 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
         LevelManager.Instance.ConsumeResources(UpgradeCostWood, UpgradeCostStone);
         currentTier += 1;
 
-        if (currentTier >= so.MaxTier)
-            OverlayUIController.Instance.DisplayUpgradeTowerMenu(false);
+        OverlayUIController.Instance.DisplayUpgradeTowerMenu(false);
 
         Debug.Log($"{this.GetType()} is now tier {currentTier}.", this.gameObject);
     }
@@ -191,6 +191,7 @@ public abstract class Towers : MonoBehaviour, ITower, IInteractable, IUpgradable
     {
         rend.sprite = so.TowerSprite;
         rangeIndicator.transform.localScale = Vector3.one * so.Range;
+        night_fov.localScale = (Vector3.one * so.Range) / CameraController.newOrthographicSize;
 
         audioS.PlayOneShot(towerUpgradeClip);
         // Play VFX?

@@ -64,9 +64,9 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
     {
         if (currentTier + 1 > maxTier) return;
 
-        if (!LevelManager.Instance.HasWood(woodCost)) return;
+        if (!LevelManager.Instance.HasResources(woodCost, stoneCost)) return;
 
-        LevelManager.Instance.ConsumeWood(woodCost);
+        LevelManager.Instance.ConsumeResources(woodCost, stoneCost);
         currentTier += 1;
 
         OnUpgraded();
