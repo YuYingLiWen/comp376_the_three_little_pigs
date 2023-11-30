@@ -4,6 +4,8 @@ using UnityEngine;
 public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDamageable
 {
     [SerializeField] Transform night_fov;
+    float night_fov_size = 25f; // adjust night fov circle size here
+
 
     //public AudioClip houseClickClip, houseUpgradeClip;
 
@@ -23,6 +25,7 @@ public sealed class TownCenter : MonoBehaviour, IInteractable, IUpgradable, IDam
     void Update()
     {
         night_fov.position = Camera.main.WorldToScreenPoint(transform.position);
+        night_fov.localScale = new Vector3(night_fov_size / CameraController.newOrthographicSize, night_fov_size / CameraController.newOrthographicSize, 1);
     }
 
     public void OnClick()
